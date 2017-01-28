@@ -248,6 +248,11 @@ function askForLanguage() {
               "content_type": "text",
               "title": "English",
               "payload": "English"
+          },
+          {
+              "content_type": "text",
+              "title": "Francais",
+              "payload": "Français"
           }
       ]
   };
