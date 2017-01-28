@@ -167,25 +167,25 @@ function handleMenu(event, sender, req,res) {
 
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
                         showTyping(true, sender);
-                        apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(name){
+                        apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(nhsFacility){
                             //replyToSender(sender,name);
-                            replyToSenderWithCarousel(sender,"","");
+                            replyToSenderWithCarousel(sender,nhsFacility);
                             showTyping(false, sender);
                             res.sendStatus(200);
                         });
                         break;
                     case BOT_SEARCH_OPTIONS.PHARMACIES.toLowerCase():
                         showTyping(true, sender);
-                        apis.getNHSFacility(apis.searchTypes.PHARMACIES,lat,lng,function(name){
-                            replyToSender(sender,name);
+                        apis.getNHSFacility(apis.searchTypes.PHARMACIES,lat,lng,function(nhsFacility){
+                            replyToSender(sender,nhsFacility);
                             showTyping(false, sender);
                             res.sendStatus(200);
                         });
                         break;
                     case BOT_SEARCH_OPTIONS.GPS.toLowerCase():
                         showTyping(true, sender);
-                        apis.getNHSFacility(apis.searchTypes.GPS,lat,lng,function(name){
-                            replyToSender(sender,name);
+                        apis.getNHSFacility(apis.searchTypes.GPS,lat,lng,function(nhsFacility){
+                            replyToSender(sender,nhsFacility);
                             showTyping(false, sender);
                             res.sendStatus(200);
                         });
