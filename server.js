@@ -69,7 +69,7 @@ app.get('/', function (req, res) {
 app.post('/webhook/', function (req, res) {
 
     //RED ALERT CODE!
-    /*
+/*
     messaging_events = req.body.entry[0].messaging;
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i];
@@ -77,7 +77,7 @@ app.post('/webhook/', function (req, res) {
         sayError(sender,BOT_STATUS.NEED_LOCATION,res);
     }
     return;
-    */
+ */
     messaging_events = req.body.entry[0].messaging;
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i];
@@ -121,10 +121,10 @@ function handleNeedLocation(event, sender, req,res) {
                         sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION,res);
                         break;
                     case "English":
-                       setLanguageFromQuickReplies(text);
+                       setLanguageFromQuickReplies(text, res);
                        break;
                    case "Francais":
-                      setLanguageFromQuickReplies(text);
+                        setLanguageFromQuickReplies(text, res);
                       break;
 
                     default:
@@ -255,12 +255,17 @@ function sayNeedLanguage(sender, res) {
 
 function askForLanguage() {
   messageData = {
-      "text" : text,
+      "text" : `We've set your language to ${currentLang}, would you like to change it?`,
       "quick_replies":[
           {
               "content_type": "text",
               "title": "English",
               "payload": "English"
+          },
+          {
+              "content_type": "text",
+              "title": "Francais",
+              "payload": "Francais"
           }
       ]
   };
@@ -400,7 +405,7 @@ function replyToSenderWithSearchOptions(sender, text) {
     });
 }
 
-setLanguageFromQuickReplies = (event) => {
+setLanguageFromQuickReplies = (event, res) => {
   if (event.message && event.message.text) {
       text = event.message.text;
       const options = ['English', 'Francais'];
@@ -408,6 +413,10 @@ setLanguageFromQuickReplies = (event) => {
         console.log(`Setting language ${text}`);
         currentLang = text;
       }
+  }
+
+  if (res) {
+    res.sendStatus(200);
   }
 }
 
