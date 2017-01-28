@@ -31,8 +31,6 @@ var BOT_SEARCH_OPTIONS = {
     GPS: 'GP'
 };
 
-
-
 /* GET - GENERAL PROPERTIES */
 
 var port = process.env.PORT || 8080;
@@ -83,8 +81,7 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
 
         console.log(`Current status: ${status}`);
-        console.log(typeof status);
-        console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`)
+        console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`);
 
         switch (status) {
             case BOT_STATUS.NEED_LOCATION:
@@ -116,6 +113,9 @@ function handleNeedLocation(event, sender, req,res) {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
+                    case "reset":
+                      sayReset(sender,res);
+                      break;
                     case "hi":
                     case "hello":
                     case "hey":
