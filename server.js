@@ -255,12 +255,17 @@ function sayNeedLanguage(sender, res) {
 
 function askForLanguage() {
   messageData = {
-      "text" : text,
+      "text" : `We've set your language to ${currentLang}, would you like to change it?`,
       "quick_replies":[
           {
               "content_type": "text",
               "title": "English",
               "payload": "English"
+          },
+          {
+              "content_type": "text",
+              "title": "Francais",
+              "payload": "Francais"
           }
       ]
   };
