@@ -503,7 +503,7 @@ function replyToSenderWithCarousel(sender, items) {
                             "url": 'https://petersfancybrownhats.com/',
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "app_url_callback"
+                            "fallback_url": app_url_callback
                         },
                         "buttons": [
                             {
