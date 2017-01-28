@@ -89,10 +89,11 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
         method: 'GET',
         json: {}
     }, function(error, response, body) {
+        console.log("INPUT",'https://www.data.gov.uk/data/api/service/health/'+type+'/nearest?lat='+lat+'&lon='+lng);
         if (error) {
             console.log('Error getting nhs facility: ', error);
         } else if (response.body.error) {
-            console.log('Error: ', response.body.error , type,lat,lng);
+            console.log('Error: ', response.body.error);
         }
         else {
             if (response.body['result'] != undefined && response.body['result'].length > 0)
