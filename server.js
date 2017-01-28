@@ -463,11 +463,11 @@ function replyToSenderWithCarousel(sender, items) {
 
     var elements = [];
     items.forEach(function(item){
-        var dict = { "title" : item.name, "subtitle" : item.phone, "email" : item.email };
+        var dict = { "title" : item.name, "subtitle" : item.phone };
         elements.push(dict);
         console.log(item);
     });
-    
+
     messageData = {
         "attachment": {
             "type": "template",
