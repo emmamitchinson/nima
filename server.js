@@ -465,11 +465,9 @@ function replyToSenderWithCarousel(sender, items) {
     items.forEach(function(item){
         var dict = { "title" : item.name, "subtitle" : item.phone, "email" : item.email };
         elements.push(dict);
+        console.log(item);
     });
-
-    item = items[0];
-    console.log(item);
-
+    
     messageData = {
         "attachment": {
             "type": "template",
