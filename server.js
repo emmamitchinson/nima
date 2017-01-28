@@ -68,6 +68,7 @@ app.get('/', function (req, res) {
 
 app.post('/webhook/', function (req, res) {
 
+    whiteListDomain("");
     //RED ALERT CODE!
 /*
     messaging_events = req.body.entry[0].messaging;
