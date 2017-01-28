@@ -31,6 +31,8 @@ var BOT_SEARCH_OPTIONS = {
     GPS: 'GP'
 };
 
+
+
 /* GET - GENERAL PROPERTIES */
 
 var port = process.env.PORT || 8080;
@@ -112,9 +114,6 @@ function handleNeedLocation(event, sender, req,res) {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
-                    case "reset":
-                      sayReset(sender,res);
-                      break;
                     case "hi":
                     case "hello":
                     case "hey":
@@ -227,6 +226,7 @@ function sayNeedLanguage(sender, res) {
     askedLangNoLocation = true;
     console.log('Attempting to get language');
     currentLang = 'English';
+    replyToSender(sender, `We've set your language to ${currentLang}, is this right`);
     askForLanguage();
     res.sendStatus(200);
     //sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION, res);
@@ -241,7 +241,7 @@ function sayNeedLanguage(sender, res) {
 
 function askForLanguage() {
   messageData = {
-      "text" : `We've set your language to ${currentLang}, would you like to change it?`,
+      "text" : text,
       "quick_replies":[
           {
               "content_type": "text",
@@ -398,7 +398,7 @@ function showTyping(flag,sender) {
     typing = "typing_off";
     if (flag == true ) {
         typing = "typing_on";
-    }
+    } 
 
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
