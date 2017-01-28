@@ -195,7 +195,7 @@ function handleMenu(event, sender, req,res) {
                         apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(items){
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
-                            replyToSenderWithSearchOptions(sender,"Looking for something else?");
+                            saySearchMore(sender);
                             res.sendStatus(200);
                         });
                         break;
@@ -204,7 +204,7 @@ function handleMenu(event, sender, req,res) {
                         apis.getNHSFacility(apis.searchTypes.PHARMACIES,lat,lng,function(items){
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
-                            replyToSenderWithSearchOptions(sender,"Looking for something else?");
+                            saySearchMore(sender);
                             res.sendStatus(200);
                         });
                         break;
@@ -213,7 +213,7 @@ function handleMenu(event, sender, req,res) {
                         apis.getNHSFacility(apis.searchTypes.GPS,lat,lng,function(items){
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
-                            replyToSenderWithSearchOptions(sender,"Looking for something else?");
+                            saySearchMore(sender);
                             res.sendStatus(200);
                         });
                         break;
@@ -316,6 +316,13 @@ function saySearchOptions(sender, nextStatus, res) {
     status = nextStatus;
     replyToSenderWithSearchOptions(sender, BOT_RESPONSES.SEARCH_OPTIONS);
     res.sendStatus(200);
+}
+
+function saySearchMore(sender) {
+    setTimeout(function () {
+        replyToSenderWithSearchOptions(sender,"Looking for something else?");
+        res.sendStatus(200);
+    }, 1000);
 }
 
 /* SEND - Text */
