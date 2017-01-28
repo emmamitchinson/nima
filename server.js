@@ -23,8 +23,10 @@ var BOT_RESPONSES  = {
 };
 
 var BOT_STATUS = {
-    NEED_LOCATION : 1,
-    MENU : 2
+    NEED_GREET : 0,
+    NEED_LANG : 1,
+    NEED_LOCATION : 2,
+    MENU : 3
 };
 
 var BOT_SEARCH_OPTIONS = {
@@ -41,7 +43,7 @@ var app_url_callback = "https://nimabotnhs.herokuapp.com/";
 var port = process.env.PORT || 8080;
 var token = "EAAESs7ymteEBAHQrZC3y2RQrXswMilWUGjPZBNyIuMVndVgBktVMSbRzEEkWPdnQXvRXdOCPxNDDfRzQ2lo9yXUyYx2y4jFPX3wDSw8yZBSNUX7MtTKB207imhW29ofQUSuFZAacf0ok417RHQZB40JZAkf1lAMO0FvAbdck1XrwZDZD";
 var secret = "nimaInHackathon";
-var status = BOT_STATUS.NEED_LOCATION;
+var status = BOT_STATUS.NEED_GREET;
 var lat = 0;
 var lng = 0;
 var currentLang = null;
@@ -90,16 +92,20 @@ app.post('/webhook/', function (req, res) {
         console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`);
 
         switch (status) {
-            case BOT_STATUS.NEED_LOCATION:
+            case BOT_STATUS.NEED_GREET:
                 introductoryGreet(sender);
+                break;
+            case BOT_STATUS.NEED_LANG:
                 setLanguageFromQuickReplies(event);
+                break;
+            case BOT_STATUS.NEED_LOCATION:
                 handleNeedLocation(event, sender, req,res);
                 break;
             case BOT_STATUS.MENU:
                 handleMenu(event, sender, req,res);
                 break;
             default:
-                sayError(sender,BOT_STATUS.NEED_LOCATION,res);
+                sayError(sender,BOT_STATUS.NEED_GREET,res);
                 break;
         }
     }
@@ -136,9 +142,6 @@ function handleNeedLocation(event, sender, req,res) {
                             }
                         });
                         break;
-                    // default:
-                    //     sayError(sender, BOT_STATUS.NEED_LOCATION, res);
-                    //     break;
                 }
             } else {
                 sayError(sender, BOT_STATUS.NEED_LOCATION, res);
@@ -269,7 +272,7 @@ function sayReset(sender, res) {
     console.log("******** RESET");
     lat = 0;
     lng = 0;
-    status = BOT_STATUS.NEED_LOCATION;
+    status = BOT_STATUS.NEED_GREET;
     currentLang = null;
     askedLangNoLocation = false;
     replyToSender(sender,BOT_RESPONSES.RESET);
