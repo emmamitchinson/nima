@@ -3,6 +3,15 @@ var bodyParser  = require('body-parser');
 var request = require('request');
 var server = require('./server');
 
+
+var API_SEARCH_TYPES = {
+    HOSPITALS: 'hospitals',
+    PHARMACIES: 'pharmacies',
+    GPS: 'gp_surgeries'
+};
+
+exports.searchTypes = API_SEARCH_TYPES;
+
 /* Get Postcode from lat lng */
 module.exports.getLatLngFromPostcode = function (postcode, callback) {
     request({

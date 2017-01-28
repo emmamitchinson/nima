@@ -27,10 +27,11 @@ var BOT_STATUS = {
 };
 
 var BOT_SEARCH_OPTIONS = {
-    HOSPITALS: 'Hospital',
+    HOSPITALS: 'Hospitals',
     PHARMACIES: 'Pharmacy',
     GPS: 'GP'
 };
+
 
 
 /* GET - GENERAL PROPERTIES */
@@ -186,9 +187,23 @@ function handleMenu(event, sender, req,res) {
                         sayReset(sender,res);
                         break;
 
-                    case BOT_SEARCH_OPTIONS.HOSPITALS:
-                        replyToSender(sender,"Oh! you need an hospital...that is funny hahaha!...Joking ;)");
-                        res.sendStatus(200);
+                    case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
+                        apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(name){
+                            replyToSender(sender,name);
+                            res.sendStatus(200);
+                        });
+                        break;
+                    case BOT_SEARCH_OPTIONS.PHARMACIES.toLowerCase():
+                        apis.getNHSFacility(apis.searchTypes.PHARMACIES,lat,lng,function(name){
+                            replyToSender(sender,name);
+                            res.sendStatus(200);
+                        });
+                        break;
+                    case BOT_SEARCH_OPTIONS.GPS.toLowerCase():
+                        apis.getNHSFacility(apis.searchTypes.GPS,lat,lng,function(name){
+                            replyToSender(sender,name);
+                            res.sendStatus(200);
+                        });
                         break;
 
                     case "hi":
