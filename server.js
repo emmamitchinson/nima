@@ -150,7 +150,7 @@ function handleMenu(event, sender, req,res) {
                         sayReset(sender,res);
                         break;
 
-                    case "a":
+                    case BOT_SEARCH_OPTIONS.HOSPITALS:
                         replyToSender(sender,"Oh! you need an hospital...that is funny hahaha!...Joking ;)");
                         res.sendStatus(200);
                         break;
