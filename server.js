@@ -81,6 +81,8 @@ app.post('/webhook/', function (req, res) {
         event = req.body.entry[0].messaging[i];
         sender = event.sender.id;
 
+        console.log(`Current status: ${status}`);
+
         switch (status) {
             case BOT_STATUS.NEED_LANG:
                 handleNeedLanguage(event, sender, req,res);
@@ -104,6 +106,14 @@ function handleNeedLanguage(event, sender, req,res) {
   // set language
   try {
     console.log('Attempting to get language');
+    status = BOT_STATUS.NEED_LOCATION;
+    lang = 'English';
+    replyToSender(sender, `We've set your langauge to ${lang}`);
+    res.sendStatus(200);
+    return;
+
+    // get below to handle the error
+
     apis.getLanguage(sender, (res) => {
       status = BOT_STATUS.NEED_LOCATION;
       lang = res.languages[0]
