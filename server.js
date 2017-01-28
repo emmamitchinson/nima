@@ -16,12 +16,19 @@ var BOT_RESPONSES  = {
     GREETING_POST  : ' nice to see you here :)',
     LOCATION     : 'So...tell me your postcode, or send me your location to help you out',
     THANKS : "Thank you",
+    SEARCH_OPTIONS: "Thank you!!! Now I can find for you the nearest...",
     ERROR : 'Sorry, you explain yourself very bad...'
 };
 
 var BOT_STATUS = {
     NEED_LOCATION : 1,
     MENU : 2
+};
+
+var BOT_SEARCH_OPTIONS = {
+    HOSPITALS: 'Hospitals',
+    PHARMACIES: 'Pharmacies',
+    GPS: 'Gps'
 };
 
 
@@ -96,9 +103,7 @@ function handleNeedLocation(event, sender, req,res) {
             lat = event.message.attachments[0].payload.coordinates.lat;
             lng = event.message.attachments[0].payload.coordinates.long;
             console.log("******** ATTACHMENT MSG RECEIVED");
-            status = BOT_STATUS.MENU;
-            replyToSender(sender, BOT_RESPONSES.THANKS);
-            res.sendStatus(200);
+            saySearchOptions(sender,BOT_STATUS.MENU,res);
         } else {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
@@ -114,7 +119,7 @@ function handleNeedLocation(event, sender, req,res) {
                             lat = latitude;
                             lng = longitude;
                             console.log("Coordinates "+ lat + "," + lng);
-                            sayThanks(sender, BOT_STATUS.MENU,res);
+                            saySearchOptions(sender,BOT_STATUS.MENU,res);
                         });
                         break;
                     default:
@@ -136,10 +141,7 @@ function handleMenu(event, sender, req,res) {
             console.log("******** ATTACHMENT MSG RECEIVED");
             lat = event.message.attachments[0].payload.coordinates.lat;
             lng = event.message.attachments[0].payload.coordinates.long;
-
-            status = BOT_STATUS.MENU;
-            replyToSender(sender, BOT_RESPONSES.THANKS);
-            res.sendStatus(200);
+            saySearchOptions(sender,BOT_STATUS.MENU,res);
         } else {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
@@ -150,7 +152,7 @@ function handleMenu(event, sender, req,res) {
                     case "hi":
                     case "hello":
                     case "hey":
-                        sayLocationNeeded(sender, BOT_STATUS.MENU,res);
+                        saySearchOptions(sender,BOT_STATUS.MENU,res);
                         break;
                     default:
                         sayError(sender, BOT_STATUS.MENU, res);
@@ -200,6 +202,13 @@ function sayReset(sender, res) {
     res.sendStatus(200);
 }
 
+function saySearchOptions(sender, nextStatus, res) {
+    console.log("******** SHOWING SEARCH OPTIONS");
+    status = nextStatus;
+    replyToSenderWithSearchOptions(sender, BOT_RESPONSES.SEARCH_OPTIONS);
+    res.sendStatus(200);
+}
+
 /* SEND - Text */
 
 function replyToSender(sender, text) {
@@ -229,6 +238,44 @@ function replyToSenderWithLocation(sender, text) {
         "quick_replies":[
             {
                 "content_type":"location",
+            }
+        ]
+    };
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token : token },
+        method: 'POST',
+        json: {
+            recipient: { id : sender },
+            message: messageData
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
+}
+
+function replyToSenderWithSearchOptions(sender, text) {
+    messageData = {
+        "text" : text,
+        "quick_replies":[
+            {
+                "content_type":"text",
+                "title":BOT_SEARCH_OPTIONS.HOSPITALS,
+                "payload":BOT_SEARCH_OPTIONS.HOSPITALS
+            },
+            {
+                "content_type":"text",
+                "title":BOT_SEARCH_OPTIONS.PHARMACIES,
+                "payload":BOT_SEARCH_OPTIONS.PHARMACIES
+            },
+            {
+                "content_type":"text",
+                "title":BOT_SEARCH_OPTIONS.GPS,
+                "payload":BOT_SEARCH_OPTIONS.GPS
             }
         ]
     };
