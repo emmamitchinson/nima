@@ -54,7 +54,7 @@ module.exports.getUserName = function (sender, callback) {
 };
 
 /**
- * Request langauge from Facebook Graph
+ * Request language from Facebook Graph
  * @param  {[type]}   sender   [description]
  * @param  {Function} callback [description]
  * @return {[type]}            [description]

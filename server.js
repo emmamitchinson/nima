@@ -83,6 +83,7 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
 
         console.log(`Current status: ${status}`);
+        console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`)
 
         switch (status) {
             case BOT_STATUS.NEED_LOCATION:
@@ -100,19 +101,19 @@ app.post('/webhook/', function (req, res) {
 });
 
 function handleNeedLanguage(sender, res) {
-  // ask for langauge or default to english
+  // ask for language or default to english
   // set language
   try {
     askedLangNoLocation = true;
     console.log('Attempting to get language');
     currentLang = 'English';
-    replyToSender(sender, `We've set your langauge to ${currentLang}`);
+    replyToSender(sender, `We've set your language to ${currentLang}`);
     sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION, res);
     return;
   } catch(e) {
     status = BOT_STATUS.NEED_LOCATION;
     lang = 'English';
-    replyToSender(sender, `We've set your langauge to ${lang}`);
+    replyToSender(sender, `We've set your language to ${lang}`);
     res.sendStatus(200);
   }
 }
