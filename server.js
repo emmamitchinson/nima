@@ -126,6 +126,7 @@ function handleNeedLocation(event, sender, req,res) {
                    case "Francais":
                       setLanguageFromQuickReplies(text);
                       break;
+
                     default:
                         //api to get lat lng from postcode
                         apis.getLatLngFromPostcode(text, function (latitude,longitude) {
