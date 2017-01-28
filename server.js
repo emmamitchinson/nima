@@ -121,10 +121,10 @@ function handleNeedLocation(event, sender, req,res) {
                         sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION,res);
                         break;
                     case "English":
-                       setLanguageFromQuickReplies(text);
+                       setLanguageFromQuickReplies(text, res);
                        break;
                    case "Francais":
-                      setLanguageFromQuickReplies(text);
+                        setLanguageFromQuickReplies(text, res);
                       break;
                     case text:
                         //api to get lat lng from postcode
@@ -399,7 +399,7 @@ function replyToSenderWithSearchOptions(sender, text) {
     });
 }
 
-setLanguageFromQuickReplies = (event) => {
+setLanguageFromQuickReplies = (event, res) => {
   if (event.message && event.message.text) {
       text = event.message.text;
       const options = ['English', 'Francais'];
@@ -407,6 +407,10 @@ setLanguageFromQuickReplies = (event) => {
         console.log(`Setting language ${text}`);
         currentLang = text;
       }
+  }
+
+  if (res) {
+    res.sendStatus(200);
   }
 }
 
