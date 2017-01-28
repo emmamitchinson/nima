@@ -177,7 +177,6 @@ function handleMenu(event, sender, req,res) {
 
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
                         showTyping(true, sender);
-                        res.sendStatus(200);
                         apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(name){
                             replyToSender(sender,name);
                             showTyping(false, sender);
