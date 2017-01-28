@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({
 
 /* General conversation */
 var BOT_RESPONSES  = {
+    INTRODUCTION : "Hi, I'm NIMA. I'm your smart friend. Try asking me about NHS facilities near you.",
     RESET : 'Lets do a fresh start...',
     GREETING  : 'Hi, ',
     GREETING_POST  : ' nice to see you here :)',
@@ -98,6 +99,7 @@ app.post('/webhook/', function (req, res) {
 
         console.log(`Current status: ${status}`);
         console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`);
+        showGreetingsMessage();
         determineResponse(status, sender, event, res, req);
     }
 });
@@ -338,6 +340,25 @@ function saySearchOptionsAgain(sender, nextStatus, res) {
 }
 
 /* SEND - Text */
+function showGreetingsMessage() {
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+        qs: { access_token : token },
+        method: 'POST',
+        json: {
+            "setting_type":"greeting",
+            "greeting":{
+                "text":BOT_RESPONSES.INTRODUCTION
+            }
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error showing greetings message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
+}
 
 function replyToSender(sender, text) {
   messageData = {
@@ -473,7 +494,7 @@ function showTyping(flag,sender) {
         }
     }, function(error, response, body) {
         if (error) {
-            console.log('Error sending message: ', error);
+            console.log('Error typing: ', error);
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
         }
