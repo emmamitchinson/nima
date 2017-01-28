@@ -18,7 +18,7 @@ var BOT_RESPONSES  = {
     THANKS : "Thank you",
     SEARCH_OPTIONS: "Thank you!!! Now I can find for you the nearest...",
     ERROR : 'Sorry, you explain yourself very bad...',
-    INVALID_POSTCODE : "Mmm, doesn't look like a valid postcode, want to give another try."
+    INVALID_POSTCODE : "Mmm, it doesn't look like a valid postcode, want to give another try."
 };
 
 var BOT_STATUS = {
@@ -171,7 +171,8 @@ function handleMenu(event, sender, req,res) {
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
                         showTyping(true, sender);
                         apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(name){
-                            replyToSender(sender,name);
+                            //replyToSender(sender,name);
+                            replyToSenderWithCarousel(sender,"","");
                             showTyping(false, sender);
                             res.sendStatus(200);
                         });
@@ -422,6 +423,57 @@ function showTyping(flag,sender) {
         json: {
             recipient: { id : sender },
             sender_action: typing
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
+}
+
+function replyToSenderWithCarousel(sender, text, items) {
+    messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [
+                    {
+                        "title": "Welcome to Peter\'s Hats",
+                        "image_url": "https://petersfancybrownhats.com/company_image.png",
+                        "subtitle": "We\'ve got the right hat for everyone.",
+                        "default_action": {
+                            "type": "web_url",
+                            "url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
+                            "messenger_extensions": true,
+                            "webview_height_ratio": "tall",
+                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        },
+                        "buttons": [
+                            {
+                                "type": "web_url",
+                                "url": "https://petersfancybrownhats.com",
+                                "title": "View Website"
+                            }, {
+                                "type": "postback",
+                                "title": "Start Chatting",
+                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    };
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token : token },
+        method: 'POST',
+        json: {
+            recipient: { id : sender },
+            message: messageData
         }
     }, function(error, response, body) {
         if (error) {
