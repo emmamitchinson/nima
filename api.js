@@ -10,44 +10,6 @@ var API_SEARCH_TYPES = {
 
 exports.searchTypes = API_SEARCH_TYPES;
 
-function whiteListDomain(domainsArray) {
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
-        qs: { access_token : server.token },
-        method: 'POST',
-        json: {
-            "setting_type" : "domain_whitelisting",
-            "whitelisted_domains" : domainsArray,
-            "domain_action_type": "add"
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
-        }
-    });
-}
-
-function whiteListDomainRemove(domainsArray) {
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
-        qs: { access_token : server.token },
-        method: 'POST',
-        json: {
-            "setting_type" : "domain_whitelisting",
-            "whitelisted_domains" : domainsArray,
-            "domain_action_type": "remove"
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
-        }
-    });
-}
-
 /* Get Postcode from lat lng */
 module.exports.getLatLngFromPostcode = function (postcode, callback) {
     request({
@@ -136,8 +98,6 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
         else {
             if (response.body['result'] != undefined && response.body['result'].length > 0){
                 var dataArray = [];
-                var domainArray = [];
-                //var modelVar;
                 var count = 0;
                 response.body['result'].every(function(nhsItem){
                     var modelVar = new Facility(
@@ -148,12 +108,9 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
                         nhsItem['latitude'],
                         nhsItem['longitude']);
                     dataArray.push(modelVar);
-                    domainArray.push(modelVar.website);
                     count += 1;
                     return count <= 4;
                      });
-                //whiteListDomainRemove(domainArray);
-                //whiteListDomain(["https://www.marioeguiluz.com"]);
                 callback(dataArray);
             }
             else

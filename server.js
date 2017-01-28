@@ -479,14 +479,14 @@ function replyToSenderWithCarousel(sender, items) {
     items.forEach(function(item){
         var urlAction = {
             "type": "web_url",
-            "url": item.website,//.replace("https://www.marioeguiluz.com/redirect?q=", ""),
+            "url": item.website,
             "messenger_extensions": false,
             "webview_height_ratio": "tall"
             //, "fallback_url": item.website
         };
         var urlButton = {
             "type": "web_url",
-            "url": item.website,//.replace("https://www.marioeguiluz.com/redirect?q=", ""),
+            "url": item.website,
             "title": BUTTON_STRINGS.WEBSITE
         };
         var mapButton = {
@@ -511,31 +511,6 @@ function replyToSenderWithCarousel(sender, items) {
             "payload": {
                 "template_type": "generic",
                 "elements": elements
-                    // [
-                    // {
-                    //     "title": item.name,
-                    //     //"image_url": "https://petersfancybrownhats.com/company_image.png",
-                    //     "subtitle": item.phone,
-                    //     "default_action": {
-                    //         "type": "web_url",
-                    //         "url": app_url_callback,
-                    //         "messenger_extensions": true,
-                    //         "webview_height_ratio": "tall",
-                    //         "fallback_url": app_url_callback
-                    //     },
-                    //     "buttons": [
-                    //         {
-                    //             "type": "web_url",
-                    //             "url": app_url_callback,
-                    //             "title": "View Website"
-                    //         }, {
-                    //             "type": "postback",
-                    //             "title": "Search again",
-                    //             "payload": BOT_RESPONSES.SEARCH_OPTIONS_REPEAT
-                    //         }
-                    //     ]
-                    // }
-                    // ]
             }
         }
     };
