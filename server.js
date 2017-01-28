@@ -118,7 +118,7 @@ function determineResponse(status, sender, event, res, req) {
   }
 }
 
-setLanguageFromQuickReplies = (event, res) => {
+function setLanguageFromQuickReplies(event, res) {
     if (event.message && event.message.text) {
         text = event.message.text;
         const options = ['English', 'Francais'];
@@ -131,7 +131,7 @@ setLanguageFromQuickReplies = (event, res) => {
     status = BOT_STATUS.NEED_LOCATION;
     replyToSender(sender, `We've set your language to ${currentLang}`);
     console.log("******** LANGUAGE CONFIRMATION MSG RECEIVED");
-    res.sendStatus(200);
+    determineResponse(status, sender, event, res, req);
 }
 
 function handleNeedLocation(event, sender, req, res) {
