@@ -43,3 +43,21 @@ module.exports.getUserName = function (sender, callback) {
         }
     });
 };
+
+module.exports.getLanguage = function(sender, callback) {
+  request({
+      url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=id,name,languages',
+      qs: { access_token : server.token },
+      method: 'GET',
+      json: {}
+  }, function(error, response, body) {
+      if (error) {
+          console.log('Error getting name: ', error);
+      } else if (response.body.error) {
+          console.log('Error: ', response.body.error);
+      }
+      else {
+          callback(response.body);
+      }
+  });
+}
