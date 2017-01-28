@@ -27,9 +27,9 @@ var BOT_STATUS = {
 };
 
 var BOT_SEARCH_OPTIONS = {
-    HOSPITALS: 'Hospitals',
-    PHARMACIES: 'Pharmacies',
-    GPS: 'Gps'
+    HOSPITALS: 'Hospital',
+    PHARMACIES: 'Pharmacy',
+    GPS: 'GP'
 };
 
 
@@ -166,6 +166,11 @@ function handleMenu(event, sender, req,res) {
                     case "reset":
                         sayReset(sender,res);
                         break;
+
+                    case BOT_SEARCH_OPTIONS.HOSPITALS:
+                        replyToSender(sender,"Oh! you need an hospital...that is funny hahaha!...Joking ;)");
+                        break;
+
                     case "hi":
                     case "hello":
                     case "hey":
