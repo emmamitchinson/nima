@@ -9,7 +9,7 @@ Facility.prototype = {
     initialize: function(name,phone,website,email,latitude,longitude) {
         this.name = name;
         this.phone = phone;
-        this.website = website ? website : "http://www.google.co.uk/";
+        this.website = website ? website.replace("http", "https") : "https://www.google.co.uk/";
         this.email = email;
         this.latitude = latitude;
         this.longitude = longitude;
