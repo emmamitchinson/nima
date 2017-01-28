@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script type="text/javascript">
+        function getParameterByName(name, url) {
+            if (!url) {
+                url = window.location.href;
+            }
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+    </script>
+
+    <script type="text/javascript">
+        <!--
+        function Redirect() {
+            var url = getParameterByName('q');
+            window.location=url;
+        }
+
+        document.write("You will be redirected to main page in 1 sec.");
+        setTimeout('Redirect()', 1000);
+        //-->
+    </script>
+
+</head>
+
+<body>
+</body>
+</html>
