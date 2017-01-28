@@ -6,4 +6,6 @@ module.exports.NHSFacility = function (name,phone,website,email,latitude,longitu
     this.email = email;
     this.latitude = latitude;
     this.longitude = longitude;
+
+    return this;
 };
