@@ -392,7 +392,7 @@ setLanguageFromQuickReplies = (event) => {
   if (event.message && event.message.text) {
       text = event.message.text.toLowerCase();
       console.log(text);
-      currentLang = 'English';
+      //currentLang = 'English';
   }
 }
 
