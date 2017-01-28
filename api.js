@@ -133,6 +133,8 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
                     count += 1;
                     return count <= 4;
                      });
+                console.log("DOMAIN SIZE",domainArray.length);
+                console.log("DATA SIZE",dataArray.length);
                 whiteListDomain(domainArray);
                 callback(dataArray);
             }
