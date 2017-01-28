@@ -18,7 +18,7 @@ var BOT_RESPONSES  = {
     THANKS : "Thank you",
     SEARCH_OPTIONS: "Thank you!!! Now I can find for you the nearest...",
     ERROR : 'Sorry, you explain yourself very bad...',
-    INVALID_POSTCODE : "Mmm, doesn't look like a valid postcode, want to give another try."
+    INVALID_POSTCODE : "Mmm, it doesn't look like a valid postcode, want to give another try."
 };
 
 var BOT_STATUS = {
