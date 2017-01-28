@@ -222,7 +222,7 @@ function introductoryGreet(sender, event, res, req) {
     console.log(sender);
     apis.getUserName(sender, function (firstName) {
       console.log(status, currentLang);
-        if (currentLang === undefined) {
+        if (currentLang === undefined || currentLang === null) {
           console.log(currentLang);
           status = BOT_STATUS.NEED_LANG;
         } else {
