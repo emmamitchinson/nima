@@ -22,6 +22,13 @@ var BOT_RESPONSES  = {
     INVALID_POSTCODE : "Mmm, it doesn't look like a valid postcode, want to give another try."
 };
 
+var BUTTON_STRINGS = {
+    WEBSITE : "View Website",
+    MAP: "Find us",
+    SEARCH_AGAIN: "Search Again",
+    NOPHONE: "No phone info"
+};
+
 var BOT_STATUS = {
     NEED_GREET : 0,
     NEED_LANG : 1,
@@ -480,20 +487,20 @@ function replyToSenderWithCarousel(sender, items) {
         var urlButton = {
             "type": "web_url",
             "url": item.website,//.replace("https://www.marioeguiluz.com/redirect?q=", ""),
-            "title": "View Website"
+            "title": BUTTON_STRINGS.WEBSITE
         };
         var mapButton = {
             "type": "web_url",
             "url": "https://maps.google.com/?q="+item.latitude+","+item.longitude,
-            "title": "Find Us"
+            "title": BUTTON_STRINGS.MAP
         };
         var searchAgainButton = {
-            "type":"postback",
-            "title":"Search Again",
-            "payload":BOT_RESPONSES.SEARCH_OPTIONS_REPEAT
+            "type": "postback",
+            "title": BUTTON_STRINGS.SEARCH_AGAIN,
+            "payload": BOT_RESPONSES.SEARCH_OPTIONS_REPEAT
         };
         var buttons = [urlButton, mapButton, searchAgainButton];
-        var dict = { "title" : item.name, "subtitle" : item.phone ? item.phone : "No phone info", "default_action" : urlAction , "buttons" : buttons };
+        var dict = { "title" : item.name, "subtitle" : item.phone ? item.phone : BUTTON_STRINGS.NOPHONE , "default_action" : urlAction , "buttons" : buttons };
         elements.push(dict);
         console.log(item);
     });
