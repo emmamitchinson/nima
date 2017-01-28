@@ -17,13 +17,16 @@ var BOT_RESPONSES  = {
     LOCATION     : 'So...tell me your postcode, or send me your location to help you out',
     THANKS : "Thank you",
     SEARCH_OPTIONS: "Thank you!!! Now I can find for you the nearest...",
+    SEARCH_OPTIONS_REPEAT: "Lets find for you the nearest...",
     ERROR : 'Sorry, you explain yourself very bad...',
     INVALID_POSTCODE : "Mmm, it doesn't look like a valid postcode, want to give another try."
 };
 
 var BOT_STATUS = {
-    NEED_LOCATION : 1,
-    MENU : 2
+    NEED_GREET : 0,
+    NEED_LANG : 1,
+    NEED_LOCATION : 2,
+    MENU : 3
 };
 
 var BOT_SEARCH_OPTIONS = {
@@ -32,6 +35,7 @@ var BOT_SEARCH_OPTIONS = {
     GPS: 'GP'
 };
 
+var app_url_callback = "https://nimabotnhs.herokuapp.com/";
 
 
 /* GET - GENERAL PROPERTIES */
@@ -39,7 +43,7 @@ var BOT_SEARCH_OPTIONS = {
 var port = process.env.PORT || 8080;
 var token = "EAAESs7ymteEBAHQrZC3y2RQrXswMilWUGjPZBNyIuMVndVgBktVMSbRzEEkWPdnQXvRXdOCPxNDDfRzQ2lo9yXUyYx2y4jFPX3wDSw8yZBSNUX7MtTKB207imhW29ofQUSuFZAacf0ok417RHQZB40JZAkf1lAMO0FvAbdck1XrwZDZD";
 var secret = "nimaInHackathon";
-var status = BOT_STATUS.NEED_LOCATION;
+var status = BOT_STATUS.NEED_GREET;
 var lat = 0;
 var lng = 0;
 var currentLang = null;
@@ -86,26 +90,33 @@ app.post('/webhook/', function (req, res) {
 
         console.log(`Current status: ${status}`);
         console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`);
-
-        switch (status) {
-            case BOT_STATUS.NEED_LOCATION:
-                introductoryGreet(sender);
-                setLanguageFromQuickReplies(event);
-                handleNeedLocation(event, sender, req,res);
-                break;
-            case BOT_STATUS.MENU:
-                handleMenu(event, sender, req,res);
-                break;
-            default:
-                sayError(sender,BOT_STATUS.NEED_LOCATION,res);
-                break;
-        }
+        determineResponse(status, sender, event, res, req);
     }
 });
 
-function handleNeedLocation(event, sender, req,res) {
-        event = req.body.entry[0].messaging[i];
-        sender = event.sender.id;
+function determineResponse(status, sender, event, res, req) {
+  switch (status) {
+      case BOT_STATUS.NEED_GREET:
+          introductoryGreet(sender, event, res, req);
+          break;
+      case BOT_STATUS.NEED_LANG:
+          setLanguageFromQuickReplies(event, res);
+          break;
+      case BOT_STATUS.NEED_LOCATION:
+          handleNeedLocation(event, sender, req, res);
+          break;
+      case BOT_STATUS.MENU:
+          handleMenu(event, sender, req, res);
+          break;
+      default:
+          sayError(sender, BOT_STATUS.NEED_GREET, res);
+          break;
+  }
+}
+
+function handleNeedLocation(event, sender, req, res) {
+        //event = req.body.entry[0].messaging[i];
+        //sender = event.sender.id;
 
         //Attachments LAT - LONG
         if (event.message.attachments != undefined && event.message.attachments.length > 0 && event.message.attachments[0]['type'] == ['location'] && event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
@@ -118,7 +129,7 @@ function handleNeedLocation(event, sender, req,res) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
                     case "reset":
-                      sayReset(sender,res);
+                      sayReset(sender, res);
                       break;
                     default:
                         //api to get lat lng from postcode
@@ -134,9 +145,6 @@ function handleNeedLocation(event, sender, req,res) {
                             }
                         });
                         break;
-                    // default:
-                    //     sayError(sender, BOT_STATUS.NEED_LOCATION, res);
-                    //     break;
                 }
             } else {
                 sayError(sender, BOT_STATUS.NEED_LOCATION, res);
@@ -159,7 +167,7 @@ function handleMenu(event, sender, req,res) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
                     case "reset":
-                        sayReset(sender,res);
+                        sayReset(sender, res);
                         break;
 
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
@@ -193,6 +201,9 @@ function handleMenu(event, sender, req,res) {
                     case "hey":
                         saySearchOptions(sender,BOT_STATUS.MENU,res);
                         break;
+                    case BOT_RESPONSES.SEARCH_OPTIONS_REPEAT:
+                        saySearchOptions(sender,BOT_STATUS.MENU,res);
+                        break;
                     default:
                         sayError(sender, BOT_STATUS.MENU, res);
                         break;
@@ -207,9 +218,18 @@ function handleMenu(event, sender, req,res) {
 
 /* General methods */
 
-function introductoryGreet(sender) {
+function introductoryGreet(sender, event, res, req) {
+    console.log(sender);
     apis.getUserName(sender, function (firstName) {
+        if (currentLang === undefined) {
+          status = BOT_STATUS.NEED_LANG;
+        } else {
+          status = BOT_STATUS.NEED_LOCATION;
+        }
+
         replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
+        determineResponse(status, sender, event, res, req);
+        //res.sendStatus(200);
     });
     console.log("******** GREETING MSG RECEIVED");
 }
@@ -236,7 +256,7 @@ function sayNeedLanguage(sender, res) {
             replyToSenderWithLanguages(sender, currentLang);
         }, 1000);
         res.sendStatus(200);
-        
+
         return;
     } catch(e) {
         status = BOT_STATUS.NEED_LOCATION;
@@ -264,10 +284,10 @@ function sayReset(sender, res) {
     console.log("******** RESET");
     lat = 0;
     lng = 0;
-    status = BOT_STATUS.NEED_LOCATION;
+    status = BOT_STATUS.NEED_GREET;
     currentLang = null;
     askedLangNoLocation = false;
-    replyToSender(sender,BOT_RESPONSES.RESET);
+    replyToSender(sender, BOT_RESPONSES.RESET);
     res.sendStatus(200);
 }
 
@@ -436,7 +456,7 @@ function showTyping(flag,sender) {
     });
 }
 
-function whiteListDomain(domain) {
+function whiteListDomain(domainsArray) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/thread_settings',
         qs: { access_token : token },
@@ -455,7 +475,7 @@ function whiteListDomain(domain) {
     });
 }
 
-function replyToSenderWithCarousel(sender, text, items) {
+function replyToSenderWithCarousel(sender, item) {
     messageData = {
         "attachment": {
             "type": "template",
@@ -463,15 +483,15 @@ function replyToSenderWithCarousel(sender, text, items) {
                 "template_type": "generic",
                 "elements": [
                     {
-                        "title": "Welcome to Peter\'s Hats",
-                        "image_url": "https://petersfancybrownhats.com/company_image.png",
-                        "subtitle": "We\'ve got the right hat for everyone.",
+                        "title": item.name,
+                        //"image_url": "https://petersfancybrownhats.com/company_image.png",
+                        "subtitle": item.phone,
                         "default_action": {
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
+                            "url": item.latitude,
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                            "fallback_url": "app_url_callback"
                         },
                         "buttons": [
                             {
@@ -480,8 +500,8 @@ function replyToSenderWithCarousel(sender, text, items) {
                                 "title": "View Website"
                             }, {
                                 "type": "postback",
-                                "title": "Start Chatting",
-                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                "title": "Search again",
+                                "payload": BOT_RESPONSES.SEARCH_OPTIONS_REPEAT
                             }
                         ]
                     }
