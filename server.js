@@ -28,7 +28,8 @@ var BOT_STATUS = {
 /* GET - GENERAL PROPERTIES */
 
 var port = process.env.PORT || 8080;
-var token = "EAARoxekgwYcBABRT6k3CmFYUU6lLI7Nz3BnAQmRsgxnHNQeXkmJW6nzIxZBKRmHzZAGPY3o2GLEVZAFq5ujgZB9auNDsSdhQ24sUGAlxGbvEmS35PKUExJRW6ogFDnCPRpzPpzDxqVmiKn9eMoNZBkbx3nE1kH8FnGBoXQHN5HgZDZD";
+var token = "EAAESs7ymteEBAHQrZC3y2RQrXswMilWUGjPZBNyIuMVndVgBktVMSbRzEEkWPdnQXvRXdOCPxNDDfRzQ2lo9yXUyYx2y4jFPX3wDSw8yZBSNUX7MtTKB207imhW29ofQUSuFZAacf0ok417RHQZB40JZAkf1lAMO0FvAbdck1XrwZDZD";
+var secret = "nimaInHackathon";
 var status = BOT_STATUS.NEED_LOCATION;
 var lat = 0;
 var lng = 0;
@@ -44,7 +45,7 @@ app.listen(port, function () {
 /* GET - GENERAL WEBHOOK */
 
 app.get('/webhook/', function (req, res) {
-  if (req.query['hub.verify_token'] === '123456') {
+  if (req.query['hub.verify_token'] === secret) {
     res.send(req.query['hub.challenge']);
   }
   res.send('Error, wrong validation token');
