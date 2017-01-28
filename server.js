@@ -83,6 +83,7 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
 
         console.log(`Current status: ${status}`);
+        console.log(typeof status);
         console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`)
 
         switch (status) {
@@ -373,5 +374,3 @@ function showTyping(flag,sender) {
         }
     });
 }
-
-
