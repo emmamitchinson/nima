@@ -491,6 +491,7 @@ function replyToSenderWithCarousel(sender, items) {
     // });
 
     item = items[0];
+    console.log(item);
 
     messageData = {
         "attachment": {
