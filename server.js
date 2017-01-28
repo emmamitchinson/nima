@@ -89,6 +89,7 @@ app.post('/webhook/', function (req, res) {
 
         switch (status) {
             case BOT_STATUS.NEED_LOCATION:
+                introductoryGreet(sender);
                 setLanguageFromQuickReplies(event);
                 handleNeedLocation(event, sender, req,res);
                 break;
@@ -206,25 +207,24 @@ function handleMenu(event, sender, req,res) {
 
 /* General methods */
 
-function introductoryGreet(sender, firstName) {
-    replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
+function introductoryGreet(sender) {
+    apis.getUserName(sender, function (firstName) {
+        replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
+    });
     console.log("******** GREETING MSG RECEIVED");
 }
 
 function sayLocationNeeded(sender, nextStatus, res) {
     console.log(`The current lang is - ${currentLang}`)
-    apis.getUserName(sender, function (firstName) {
-        introductoryGreet(sender, firstName);
-        setTimeout(function () {
-            if (currentLang === null) {
-                sayNeedLanguage(sender, res);
-            } else {
-              replyToSenderWithLocation(sender,BOT_RESPONSES.LOCATION);
-              status = nextStatus;
-              res.sendStatus(200);
-            }
-        }, 1000);
-    })
+    setTimeout(function () {
+        if (currentLang === null) {
+            sayNeedLanguage(sender, res);
+        } else {
+          replyToSenderWithLocation(sender,BOT_RESPONSES.LOCATION);
+          status = nextStatus;
+          res.sendStatus(200);
+        }
+    }, 1000);
 }
 
 function sayNeedLanguage(sender, res) {
