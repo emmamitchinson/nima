@@ -29,6 +29,25 @@ function whiteListDomain(domainsArray) {
     });
 }
 
+function whiteListDomainRemove(domainsArray) {
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+        qs: { access_token : server.token },
+        method: 'POST',
+        json: {
+            "setting_type" : "domain_whitelisting",
+            "whitelisted_domains" : domainsArray,
+            "domain_action_type": "remove"
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
+}
+
 /* Get Postcode from lat lng */
 module.exports.getLatLngFromPostcode = function (postcode, callback) {
     request({
@@ -133,7 +152,7 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
                     count += 1;
                     return count <= 4;
                      });
-                //whiteListDomain(domainArray);
+                whiteListDomainRemove(domainArray);
                 whiteListDomain(["https://marioeguiluz.com"]);
                 callback(dataArray);
             }
