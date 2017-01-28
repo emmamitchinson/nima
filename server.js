@@ -195,8 +195,8 @@ function handleMenu(event, sender, req,res) {
                         apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(items){
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
-                            saySearchMore(sender);
                             res.sendStatus(200);
+                            saySearchMore(sender,res);
                         });
                         break;
                     case BOT_SEARCH_OPTIONS.PHARMACIES.toLowerCase():
@@ -204,8 +204,8 @@ function handleMenu(event, sender, req,res) {
                         apis.getNHSFacility(apis.searchTypes.PHARMACIES,lat,lng,function(items){
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
-                            saySearchMore(sender);
                             res.sendStatus(200);
+                            saySearchMore(sender,res);
                         });
                         break;
                     case BOT_SEARCH_OPTIONS.GPS.toLowerCase():
@@ -213,8 +213,8 @@ function handleMenu(event, sender, req,res) {
                         apis.getNHSFacility(apis.searchTypes.GPS,lat,lng,function(items){
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
-                            saySearchMore(sender);
                             res.sendStatus(200);
+                            saySearchMore(sender,res);
                         });
                         break;
 
@@ -318,7 +318,7 @@ function saySearchOptions(sender, nextStatus, res) {
     res.sendStatus(200);
 }
 
-function saySearchMore(sender) {
+function saySearchMore(sender,res) {
     setTimeout(function () {
         replyToSenderWithSearchOptions(sender,"Looking for something else?");
         res.sendStatus(200);
