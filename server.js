@@ -101,14 +101,21 @@ app.post('/webhook/', function (req, res) {
 function handleNeedLanguage(event, sender, req,res) {
   // get language
   // set language
-  apis.getLanguage(sender, (res) => {
-    res.languages[0];
-    sayConfirmLang(sender, BOT_STATUS.NEED_LOCATION,res);
+  try {
+    console.log('Attempting to get language');
+    apis.getLanguage(sender, (res) => {
+      status = BOT_STATUS.NEED_LOCATION;
+      lang = res.languages[0]
+      replyToSender(sender, `We've set your langauge to ${lang}`);
+      res.sendStatus(200);
+    });
+  } catch(e) {
+    console.log(e)
     status = BOT_STATUS.NEED_LOCATION;
-    lang = res.languages[0]
+    lang = 'English';
     replyToSender(sender, `We've set your langauge to ${lang}`);
     res.sendStatus(200);
-  });
+  }
 }
 
 function handleNeedLocation(event, sender, req,res) {
