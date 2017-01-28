@@ -97,14 +97,14 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
         }
         else {
             if (response.body['result'] != undefined && response.body['result'].length > 0){
-                let array = [];
-                let model = model(response.body['result'][0]['name'],
+                var array = [];
+                var modelVar = model(response.body['result'][0]['name'],
                                   response.body['result'][0]['phone'],
                                   response.body['result'][0]['website'],
                                   response.body['result'][0]['email'],
                                   response.body['result'][0]['latitude    '],
                                   response.body['result'][0]['longitude']);
-                array.push(model);
+                array.push(modelVar);
                 callback(array);
             }
             else
