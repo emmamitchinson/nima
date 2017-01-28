@@ -363,7 +363,7 @@ function showTyping(flag,sender) {
             recipient: { id : sender }
 
         },
-        sender_action: flag ? "typing_on" : "typing_off"
+        sender_action: flag == true ? "typing_on" : "typing_off"
     }, function(error, response, body) {
         if (error) {
             console.log('Error sending message: ', error);
