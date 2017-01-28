@@ -169,9 +169,9 @@ function handleMenu(event, sender, req,res) {
 
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
                         showTyping(true, sender);
-                        apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(nhsFacility){
+                        apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(items){
                             //replyToSender(sender,name);
-                            replyToSenderWithCarousel(sender,nhsFacility);
+                            replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
                             res.sendStatus(200);
                         });
@@ -463,7 +463,14 @@ function whiteListDomain(domainsArray) {
     });
 }
 
-function replyToSenderWithCarousel(sender, item) {
+function replyToSenderWithCarousel(sender, items) {
+
+    // items.forEach(function(value){
+    //    var dict = ["" : ];
+    // });
+
+    item = items[0];
+
     messageData = {
         "attachment": {
             "type": "template",
