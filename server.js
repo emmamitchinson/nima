@@ -219,7 +219,7 @@ function handleMenu(event, sender, req,res) {
 
 /* General methods */
 
-function introductoryGreet(sender, event, res, req) {
+function introductoryGreet(status, sender, event, res, req) {
     apis.getUserName(sender, function (firstName) {
         if (currentLang === undefined) {
           status = BOT_STATUS.NEED_LANG;
