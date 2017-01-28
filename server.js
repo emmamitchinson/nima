@@ -17,7 +17,8 @@ var BOT_RESPONSES  = {
     LOCATION     : 'So...tell me your postcode, or send me your location to help you out',
     THANKS : "Thank you",
     SEARCH_OPTIONS: "Thank you!!! Now I can find for you the nearest...",
-    ERROR : 'Sorry, you explain yourself very bad...'
+    ERROR : 'Sorry, you explain yourself very bad...',
+    INVALID_POSTCODE : "Mmm, doesn't look like a valid postcode, want to give another try."
 };
 
 var BOT_STATUS = {
@@ -119,13 +120,18 @@ function handleNeedLocation(event, sender, req,res) {
                     case "hey":
                         sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION,res);
                         break;
-                    case "w106hs":
+                    case text:
                         //api to get lat lng from postcode
                         apis.getLatLngFromPostcode(text, function (latitude,longitude) {
-                            lat = latitude;
-                            lng = longitude;
-                            console.log("Coordinates "+ lat + "," + lng);
-                            saySearchOptions(sender,BOT_STATUS.MENU,res);
+                            if(latitude != 0 && longitude != 0) {
+                                lat = latitude;
+                                lng = longitude;
+                                saySearchOptions(sender, BOT_STATUS.MENU, res);
+                            }
+                            else {
+                                replyToSender(sender,BOT_RESPONSES.INVALID_POSTCODE);
+                                res.sendStatus(200);
+                            }
                         });
                         break;
                     default:
