@@ -463,7 +463,20 @@ function replyToSenderWithCarousel(sender, items) {
 
     var elements = [];
     items.forEach(function(item){
-        var dict = { "title" : item.name, "subtitle" : item.phone ? item.phone : "No phone info" };
+        var urlAction = {
+            "type": "web_url",
+            "url": item.website,
+            "messenger_extensions": true,
+            "webview_height_ratio": "tall",
+            "fallback_url": app_url_callback
+        };
+        var urlButton = {
+            "type": "web_url",
+            "url": item.website,
+            "title": "View Website"
+        };
+        var buttons = [urlButton];
+        var dict = { "title" : item.name, "subtitle" : item.phone ? item.phone : "No phone info", "default_action" : urlAction , "buttons" : buttons };
         elements.push(dict);
         console.log(item);
     });
