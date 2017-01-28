@@ -104,7 +104,7 @@ function determineResponse(status, sender, event, res, req) {
           sayNeedLanguage(sender, res);
           break;
       case BOT_STATUS.LANG_PENDING:
-          setLanguageFromQuickReplies(event, res);
+          setLanguageFromQuickReplies(event, sender, res, req);
           break;
       case BOT_STATUS.NEED_LOCATION:
           handleNeedLocation(event, sender, req, res);
@@ -118,7 +118,7 @@ function determineResponse(status, sender, event, res, req) {
   }
 }
 
-function setLanguageFromQuickReplies(event, res) {
+function setLanguageFromQuickReplies(event, sender, res, req) {
     if (event.message && event.message.text) {
         text = event.message.text;
         const options = ['English', 'Francais'];
