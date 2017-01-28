@@ -118,10 +118,10 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
             if (response.body['result'] != undefined && response.body['result'].length > 0){
                 var dataArray = [];
                 var domainArray = [];
-                var modelVar;
+                //var modelVar;
                 var count = 0;
                 response.body['result'].every(function(nhsItem){
-                    modelVar = model.createFacility(
+                    var modelVar = new Facility(  //model.createFacility(
                         nhsItem['name'],
                         nhsItem['phone'],
                         nhsItem['website'],
