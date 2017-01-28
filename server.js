@@ -404,7 +404,7 @@ function showTyping(flag,sender) {
         method: 'POST',
         json: {
             recipient: { id : sender },
-            sender_action: "typing_on"
+            sender_action: flag == true ? "typing_on" : "typing_off"
         }
     }, function(error, response, body) {
         if (error) {
