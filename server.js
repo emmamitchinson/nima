@@ -169,6 +169,7 @@ function handleMenu(event, sender, req,res) {
 
                     case BOT_SEARCH_OPTIONS.HOSPITALS:
                         replyToSender(sender,"Oh! you need an hospital...that is funny hahaha!...Joking ;)");
+                        res.sendStatus(200);
                         break;
 
                     case "hi":
