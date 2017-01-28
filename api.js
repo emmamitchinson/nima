@@ -92,7 +92,7 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
         if (error) {
             console.log('Error getting nhs facility: ', error);
         } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
+            console.log('Error: ', response.body.error , type,lat,lng);
         }
         else {
             if (response.body['result'] != undefined && response.body['result'].length > 0)
