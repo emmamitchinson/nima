@@ -10,6 +10,25 @@ var API_SEARCH_TYPES = {
 
 exports.searchTypes = API_SEARCH_TYPES;
 
+function whiteListDomain(domainsArray) {
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+        qs: { access_token : server.token },
+        method: 'POST',
+        json: {
+            "setting_type" : "domain_whitelisting",
+            "whitelisted_domains" : domainsArray,
+            "domain_action_type": "add"
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
+}
+
 /* Get Postcode from lat lng */
 module.exports.getLatLngFromPostcode = function (postcode, callback) {
     request({
@@ -67,7 +86,7 @@ module.exports.getLanguage = function(sender, callback, errorCallback) {
       json: {}
   }, function(error, response, body) {
       if (error) {
-        console.log('in error callback')
+        console.log('in error callback');
         errorCallback(error);
       }
       if (error) {
@@ -79,7 +98,7 @@ module.exports.getLanguage = function(sender, callback, errorCallback) {
           callback(response.body);
       }
   });
-}
+};
 
 /* Get nearest nhs facility details for menu */
 module.exports.getNHSFacility = function (type, lat, lng, callback) {
@@ -97,15 +116,25 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
         }
         else {
             if (response.body['result'] != undefined && response.body['result'].length > 0){
-                var array = [];
-                var modelVar = model.createFacility(response.body['result'][0]['name'],
-                                  response.body['result'][0]['phone'],
-                                  response.body['result'][0]['website'],
-                                  response.body['result'][0]['email'],
-                                  response.body['result'][0]['latitude'],
-                                  response.body['result'][0]['longitude']);
-                array.push(modelVar);
-                callback(array);
+                var dataArray = [];
+                var domainArray = [];
+                var modelVar;
+                var count = 0;
+                response.body['result'].every(function(nhsItem){
+                    modelVar = model.createFacility(
+                        nhsItem['name'],
+                        nhsItem['phone'],
+                        nhsItem['website'],
+                        nhsItem['email'],
+                        nhsItem['latitude'],
+                        nhsItem['longitude']);
+                    dataArray.push(modelVar);
+                    domainArray.push(nhsItem['website']);
+                    count += 1;
+                    return count <= 4;
+                     });
+                whiteListDomain(domainArray);
+                callback(dataArray);
             }
             else
                 callback("error");

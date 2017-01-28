@@ -74,7 +74,6 @@ app.get('/', function (req, res) {
 
 app.post('/webhook/', function (req, res) {
 
-    whiteListDomain("");
     //RED ALERT CODE!
 /*
     messaging_events = req.body.entry[0].messaging;
@@ -450,25 +449,6 @@ function showTyping(flag,sender) {
         json: {
             recipient: { id : sender },
             sender_action: typing
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
-        }
-    });
-}
-
-function whiteListDomain(domainsArray) {
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
-        qs: { access_token : token },
-        method: 'POST',
-        json: {
-            "setting_type" : "domain_whitelisting",
-            "whitelisted_domains" : ["https://petersfancyapparel.com", "https://peterssendreceiveapp.ngrok.io", app_url_callback],
-            "domain_action_type": "add"
         }
     }, function(error, response, body) {
         if (error) {
