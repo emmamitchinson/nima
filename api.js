@@ -121,7 +121,7 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
                 //var modelVar;
                 var count = 0;
                 response.body['result'].every(function(nhsItem){
-                    var modelVar = new Facility(  //model.createFacility(
+                    var modelVar = new Facility(
                         nhsItem['name'],
                         nhsItem['phone'],
                         nhsItem['website'],
@@ -129,7 +129,7 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
                         nhsItem['latitude'],
                         nhsItem['longitude']);
                     dataArray.push(modelVar);
-                    domainArray.push(nhsItem['website']);
+                    domainArray.push(modelVar.website);
                     count += 1;
                     return count <= 4;
                      });
