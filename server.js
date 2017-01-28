@@ -69,7 +69,7 @@ app.get('/', function (req, res) {
 app.post('/webhook/', function (req, res) {
 
     //RED ALERT CODE!
-
+/*
     messaging_events = req.body.entry[0].messaging;
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i];
@@ -77,7 +77,7 @@ app.post('/webhook/', function (req, res) {
         sayError(sender,BOT_STATUS.NEED_LOCATION,res);
     }
     return;
-    
+ */
     messaging_events = req.body.entry[0].messaging;
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i];
