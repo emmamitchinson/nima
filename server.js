@@ -182,7 +182,8 @@ function handleMenu(event, sender, req,res) {
             lat = event.message.attachments[0].payload.coordinates.lat;
             lng = event.message.attachments[0].payload.coordinates.long;
             saySearchOptions(sender,BOT_STATUS.MENU,res);
-        } else {
+        }
+        else {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
@@ -230,6 +231,8 @@ function handleMenu(event, sender, req,res) {
             }
             else {
                 //error
+                console.log("EVENT---------",event);
+                console.log("REQUEST---------",req);
                 sayError(sender, BOT_STATUS.MENU, res);
             }
         }
