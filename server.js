@@ -464,7 +464,7 @@ function replyToSenderWithCarousel(sender, items) {
     items.forEach(function(item){
         var urlAction = {
             "type": "web_url",
-            "url": item.website,
+            "url": item.website.replace("https://www.marioeguiluz.com/redirect?q=", ""),
             "messenger_extensions": true,
             "webview_height_ratio": "tall",
             "fallback_url": item.website
