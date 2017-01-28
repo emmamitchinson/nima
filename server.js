@@ -107,7 +107,7 @@ function determineResponse(status, sender, event, res, req) {
           setLanguageFromQuickReplies(event, sender, res, req);
           break;
       case BOT_STATUS.NEED_LOCATION:
-          handleNeedLocation(event, sender, req, res);
+          sayLocationNeeded(sender, BOT_STATUS.menu, res);
           break;
       case BOT_STATUS.MENU:
           handleMenu(event, sender, req, res);
@@ -254,15 +254,10 @@ function introductoryGreet(sender, event, res, req) {
 }
 
 function sayLocationNeeded(sender, nextStatus, res) {
-    console.log(`The current lang is - ${currentLang}`)
     setTimeout(function () {
-        if (currentLang === null) {
-            sayNeedLanguage(sender, res);
-        } else {
           replyToSenderWithLocation(sender,BOT_RESPONSES.LOCATION);
           status = nextStatus;
           res.sendStatus(200);
-        }
     }, 1000);
 }
 
