@@ -91,25 +91,29 @@ app.post('/webhook/', function (req, res) {
         console.log(`Current status: ${status}`);
         console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`);
 
-        switch (status) {
-            case BOT_STATUS.NEED_GREET:
-                introductoryGreet(sender, res);
-                break;
-            case BOT_STATUS.NEED_LANG:
-                setLanguageFromQuickReplies(event, res);
-                break;
-            case BOT_STATUS.NEED_LOCATION:
-                handleNeedLocation(event, sender, req,res);
-                break;
-            case BOT_STATUS.MENU:
-                handleMenu(event, sender, req,res);
-                break;
-            default:
-                sayError(sender,BOT_STATUS.NEED_GREET,res);
-                break;
-        }
+        determineResponse(status, event, res, req);
     }
 });
+
+function determineResponse(status, sender, event, res, req) {
+  switch (status) {
+      case BOT_STATUS.NEED_GREET:
+          introductoryGreet(sender, event, res, req);
+          break;
+      case BOT_STATUS.NEED_LANG:
+          setLanguageFromQuickReplies(event, res);
+          break;
+      case BOT_STATUS.NEED_LOCATION:
+          handleNeedLocation(event, sender, req, res);
+          break;
+      case BOT_STATUS.MENU:
+          handleMenu(event, sender, req, res);
+          break;
+      default:
+          sayError(sender, BOT_STATUS.NEED_GREET, res);
+          break;
+  }
+}
 
 function handleNeedLocation(event, sender, req,res) {
         event = req.body.entry[0].messaging[i];
@@ -126,7 +130,7 @@ function handleNeedLocation(event, sender, req,res) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
                     case "reset":
-                      sayReset(sender,res);
+                      sayReset(sender, res);
                       break;
                     default:
                         //api to get lat lng from postcode
@@ -164,7 +168,7 @@ function handleMenu(event, sender, req,res) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
                     case "reset":
-                        sayReset(sender,res);
+                        sayReset(sender, res);
                         break;
 
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
@@ -215,7 +219,7 @@ function handleMenu(event, sender, req,res) {
 
 /* General methods */
 
-function introductoryGreet(sender, res) {
+function introductoryGreet(sender, event, res, req) {
     apis.getUserName(sender, function (firstName) {
         if (currentLang === undefined) {
           status = BOT_STATUS.NEED_LANG;
@@ -224,7 +228,8 @@ function introductoryGreet(sender, res) {
         }
 
         replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
-        res.sendStatus(200);
+        determineResponse(status, sender, event, res, req);
+        //res.sendStatus(200);
     });
     console.log("******** GREETING MSG RECEIVED");
 }
@@ -282,7 +287,7 @@ function sayReset(sender, res) {
     status = BOT_STATUS.NEED_GREET;
     currentLang = null;
     askedLangNoLocation = false;
-    replyToSender(sender,BOT_RESPONSES.RESET);
+    replyToSender(sender, BOT_RESPONSES.RESET);
     res.sendStatus(200);
 }
 
