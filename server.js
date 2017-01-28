@@ -27,7 +27,8 @@ var BOT_STATUS = {
     NEED_LANG : 1,
     LANG_PENDING : 2,
     NEED_LOCATION : 3,
-    MENU : 4
+    LOCATION_PENDING: 4,
+    MENU : 5
 };
 
 var BOT_SEARCH_OPTIONS = {
@@ -107,7 +108,10 @@ function determineResponse(status, sender, event, res, req) {
           setLanguageFromQuickReplies(event, sender, res, req);
           break;
       case BOT_STATUS.NEED_LOCATION:
-          sayLocationNeeded(sender, BOT_STATUS.menu, res);
+          sayLocationNeeded(sender, BOT_STATUS.LOCATION_PENDING, res);
+          break;
+      case BOT_STATUS.LOCATION_PENDING:
+          handleNeedLocation(event,sender,req,res);
           break;
       case BOT_STATUS.MENU:
           handleMenu(event, sender, req, res);
