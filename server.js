@@ -259,6 +259,7 @@ function sayReset(sender, res) {
     lat = 0;
     lng = 0;
     status = BOT_STATUS.NEED_LOCATION;
+    currentLang = null;
     replyToSender(sender,BOT_RESPONSES.RESET);
     res.sendStatus(200);
 }
