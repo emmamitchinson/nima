@@ -1,5 +1,5 @@
 
-module.exports.NHSFacility = function (name,phone,website,email,latitude,longitude) {
+module.exports.createFacility = function (name,phone,website,email,latitude,longitude) {
     this.name = name;
     this.phone = phone;
     this.website = website;
