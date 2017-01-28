@@ -21,6 +21,7 @@ var BOT_RESPONSES  = {
 };
 
 var BOT_STATUS = {
+    NEED_LANG: 0,
     NEED_LOCATION : 1,
     MENU : 2
 };
@@ -38,7 +39,7 @@ var BOT_SEARCH_OPTIONS = {
 var port = process.env.PORT || 8080;
 var token = "EAAESs7ymteEBAHQrZC3y2RQrXswMilWUGjPZBNyIuMVndVgBktVMSbRzEEkWPdnQXvRXdOCPxNDDfRzQ2lo9yXUyYx2y4jFPX3wDSw8yZBSNUX7MtTKB207imhW29ofQUSuFZAacf0ok417RHQZB40JZAkf1lAMO0FvAbdck1XrwZDZD";
 var secret = "nimaInHackathon";
-var status = BOT_STATUS.NEED_LOCATION;
+var status = BOT_STATUS.NEED_LANG;
 var lat = 0;
 var lng = 0;
 
@@ -81,6 +82,9 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
 
         switch (status) {
+            case BOT_STATUS.NEED_LANG:
+                handleNeedLanguage(event, sender, req,res);
+                break;
             case BOT_STATUS.NEED_LOCATION:
                 handleNeedLocation(event, sender, req,res);
                 break;
@@ -94,6 +98,32 @@ app.post('/webhook/', function (req, res) {
 
     }
 });
+
+function handleNeedLanguage(event, sender, req,res) {
+  // get language
+  // set language
+  try {
+    console.log('Attempting to get language');
+    apis.getLanguage(sender, (res) => {
+      status = BOT_STATUS.NEED_LOCATION;
+      lang = res.languages[0]
+      replyToSender(sender, `We've set your langauge to ${lang}`);
+      res.sendStatus(200);
+    }, (e) => {
+      console.log(e)
+      status = BOT_STATUS.NEED_LOCATION;
+      lang = 'English';
+      replyToSender(sender, `We've set your langauge to ${lang}`);
+      res.sendStatus(200);
+    });
+  } catch(e) {
+    console.log(e)
+    status = BOT_STATUS.NEED_LOCATION;
+    lang = 'English';
+    replyToSender(sender, `We've set your langauge to ${lang}`);
+    res.sendStatus(200);
+  }
+}
 
 function handleNeedLocation(event, sender, req,res) {
         event = req.body.entry[0].messaging[i];
@@ -316,4 +346,3 @@ function replyToSenderWithSearchOptions(sender, text) {
         }
     });
 }
-

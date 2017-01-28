@@ -53,6 +53,33 @@ module.exports.getUserName = function (sender, callback) {
     });
 };
 
+/**
+ * Request langauge from Facebook Graph
+ * @param  {[type]}   sender   [description]
+ * @param  {Function} callback [description]
+ * @return {[type]}            [description]
+ */
+module.exports.getLanguage = function(sender, callback, errorCallback) {
+  request({
+      url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=id,name,languages',
+      qs: { access_token : server.token },
+      method: 'GET',
+      json: {}
+  }, function(error, response, body) {
+      if (error) {
+        errorCallback(error);
+      }
+      if (error) {
+          console.log('Error getting name: ', error);
+      } else if (response.body.error) {
+          console.log('Error: ', response.body.error);
+      }
+      else {
+          callback(response.body);
+      }
+  });
+}
+
 /* Get nearest nhs facility details for menu */
 module.exports.getNHSFacility = function (type, lat, lng, callback) {
     request({
