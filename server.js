@@ -221,7 +221,9 @@ function handleMenu(event, sender, req,res) {
 function introductoryGreet(sender, event, res, req) {
     console.log(sender);
     apis.getUserName(sender, function (firstName) {
+      console.log(status, currentLang);
         if (currentLang === undefined) {
+          console.log(currentLang);
           status = BOT_STATUS.NEED_LANG;
         } else {
           status = BOT_STATUS.NEED_LOCATION;
