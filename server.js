@@ -341,6 +341,7 @@ function saySearchOptionsAgain(sender, nextStatus, res) {
 
 /* SEND - Text */
 function showGreetingsMessage() {
+    console("IM HERE.......");
     request({
         url: 'https://graph.facebook.com/v2.6/me/thread_settings',
         qs: { access_token : token },
