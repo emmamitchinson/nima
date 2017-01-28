@@ -196,7 +196,6 @@ function handleMenu(event, sender, req,res) {
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
                             res.sendStatus(200);
-                            saySearchMore(sender,res);
                         });
                         break;
                     case BOT_SEARCH_OPTIONS.PHARMACIES.toLowerCase():
@@ -205,7 +204,6 @@ function handleMenu(event, sender, req,res) {
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
                             res.sendStatus(200);
-                            saySearchMore(sender,res);
                         });
                         break;
                     case BOT_SEARCH_OPTIONS.GPS.toLowerCase():
@@ -214,7 +212,6 @@ function handleMenu(event, sender, req,res) {
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
                             res.sendStatus(200);
-                            saySearchMore(sender,res);
                         });
                         break;
 
@@ -316,13 +313,6 @@ function saySearchOptions(sender, nextStatus, res) {
     status = nextStatus;
     replyToSenderWithSearchOptions(sender, BOT_RESPONSES.SEARCH_OPTIONS);
     res.sendStatus(200);
-}
-
-function saySearchMore(sender,res) {
-    setTimeout(function () {
-        replyToSenderWithSearchOptions(sender,"Looking for something else?");
-        res.sendStatus(200);
-    }, 1000);
 }
 
 /* SEND - Text */
