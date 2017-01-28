@@ -217,6 +217,12 @@ function handleMenu(event, sender, req,res) {
 
 function introductoryGreet(sender, res) {
     apis.getUserName(sender, function (firstName) {
+        if (currentLang === undefined) {
+          status = BOT_STATUS.NEED_LANG;
+        } else {
+          status = BOT_STATUS.NEED_LOCATION;
+        }
+
         replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
         res.sendStatus(200);
     });
@@ -245,7 +251,7 @@ function sayNeedLanguage(sender, res) {
             replyToSenderWithLanguages(sender, currentLang);
         }, 1000);
         res.sendStatus(200);
-        
+
         return;
     } catch(e) {
         status = BOT_STATUS.NEED_LOCATION;
