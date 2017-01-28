@@ -119,26 +119,20 @@ function determineResponse(status, sender, event, res, req) {
 }
 
 setLanguageFromQuickReplies = (event, res) => {
-  if (event.message && event.message.text) {
-      text = event.message.text;
-      const options = ['English', 'Francais'];
-      if (options.indexOf(text) != -1) {
-        console.log(`Setting language ${text}`);
-        currentLang = text;
-      }
-  }
+    if (event.message && event.message.text) {
+        text = event.message.text;
+        const options = ['English', 'Francais'];
+        if (options.indexOf(text) != -1) {
+            console.log(`Setting language ${text}`);
+            currentLang = text;
+        }
+    }
 
-  status = BOT_STATUS.NEED_LOCATION;
-
-  if (res) {
-    res.sendStatus(200);
-  }
+    status = BOT_STATUS.NEED_LOCATION;
+    determineResponse(status, sender, event, res, req);
 }
 
 function handleNeedLocation(event, sender, req, res) {
-        //event = req.body.entry[0].messaging[i];
-        //sender = event.sender.id;
-
         //Attachments LAT - LONG
         if (event.message.attachments != undefined && event.message.attachments.length > 0 && event.message.attachments[0]['type'] == ['location'] && event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
             lat = event.message.attachments[0].payload.coordinates.lat;
