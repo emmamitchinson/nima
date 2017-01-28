@@ -42,6 +42,7 @@ var status = BOT_STATUS.NEED_LOCATION;
 var lat = 0;
 var lng = 0;
 var currentLang = null;
+var askedLangNoLocation = false;
 
 exports.token = token;
 
@@ -102,6 +103,7 @@ function handleNeedLanguage(sender, res) {
   // ask for langauge or default to english
   // set language
   try {
+    askedLangNoLocation = true;
     console.log('Attempting to get language');
     currentLang = 'English';
     replyToSender(sender, `We've set your langauge to ${currentLang}`);
@@ -213,7 +215,9 @@ function sayLocationNeeded(sender, nextStatus, res) {
     console.log("******** GREETING MSG RECEIVED");
     console.log(`The current lang is - ${currentLang}`)
     apis.getUserName(sender, function (firstName) {
-        replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
+        if (askedLangNoLocation === false) {
+          replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
+        }
         setTimeout(function () {
             if (currentLang === null) {
                 handleNeedLanguage(sender, res);
@@ -245,6 +249,7 @@ function sayReset(sender, res) {
     lng = 0;
     status = BOT_STATUS.NEED_LOCATION;
     currentLang = null;
+    askedLangNoLocation = false;
     replyToSender(sender,BOT_RESPONSES.RESET);
     res.sendStatus(200);
 }
