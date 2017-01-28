@@ -182,7 +182,7 @@ function handleMenu(event, sender, req,res) {
             lat = event.message.attachments[0].payload.coordinates.lat;
             lng = event.message.attachments[0].payload.coordinates.long;
             saySearchOptions(sender,BOT_STATUS.MENU,res);
-        }else if (event['postback']['payload']) {
+        }else if (event['postback'] && event['postback']['payload']) {
             switch (event['postback']['payload'].toLowerCase()) {
                 case BOT_RESPONSES.SEARCH_OPTIONS_REPEAT.toLowerCase():
                     saySearchOptions(sender,BOT_STATUS.MENU,res);
