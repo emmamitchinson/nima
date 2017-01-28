@@ -17,6 +17,7 @@ var BOT_RESPONSES  = {
     LOCATION     : 'So...tell me your postcode, or send me your location to help you out',
     THANKS : "Thank you",
     SEARCH_OPTIONS: "Thank you!!! Now I can find for you the nearest...",
+    SEARCH_OPTIONS_REPEAT: "Lets find for you the nearest...",
     ERROR : 'Sorry, you explain yourself very bad...',
     INVALID_POSTCODE : "Mmm, it doesn't look like a valid postcode, want to give another try."
 };
@@ -34,6 +35,7 @@ var BOT_SEARCH_OPTIONS = {
     GPS: 'GP'
 };
 
+var app_url_callback = "https://nimabotnhs.herokuapp.com/";
 
 
 /* GET - GENERAL PROPERTIES */
@@ -194,6 +196,9 @@ function handleMenu(event, sender, req,res) {
                     case "hi":
                     case "hello":
                     case "hey":
+                        saySearchOptions(sender,BOT_STATUS.MENU,res);
+                        break;
+                    case BOT_RESPONSES.SEARCH_OPTIONS_REPEAT:
                         saySearchOptions(sender,BOT_STATUS.MENU,res);
                         break;
                     default:
@@ -440,7 +445,7 @@ function showTyping(flag,sender) {
     });
 }
 
-function whiteListDomain(domain) {
+function whiteListDomain(domainsArray) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/thread_settings',
         qs: { access_token : token },
@@ -459,7 +464,7 @@ function whiteListDomain(domain) {
     });
 }
 
-function replyToSenderWithCarousel(sender, text, items) {
+function replyToSenderWithCarousel(sender, item) {
     messageData = {
         "attachment": {
             "type": "template",
@@ -467,15 +472,15 @@ function replyToSenderWithCarousel(sender, text, items) {
                 "template_type": "generic",
                 "elements": [
                     {
-                        "title": "Welcome to Peter\'s Hats",
-                        "image_url": "https://petersfancybrownhats.com/company_image.png",
-                        "subtitle": "We\'ve got the right hat for everyone.",
+                        "title": item.name,
+                        //"image_url": "https://petersfancybrownhats.com/company_image.png",
+                        "subtitle": item.phone,
                         "default_action": {
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
+                            "url": item.latitude,
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                            "fallback_url": "app_url_callback"
                         },
                         "buttons": [
                             {
@@ -484,8 +489,8 @@ function replyToSenderWithCarousel(sender, text, items) {
                                 "title": "View Website"
                             }, {
                                 "type": "postback",
-                                "title": "Start Chatting",
-                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                "title": "Search again",
+                                "payload": BOT_RESPONSES.SEARCH_OPTIONS_REPEAT
                             }
                         ]
                     }
