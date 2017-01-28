@@ -1,6 +1,6 @@
 var request = require('request');
 var server = require('./server');
-var model = require('./model');
+var Facility = require('./model');
 
 var API_SEARCH_TYPES = {
     HOSPITALS: 'hospitals',
