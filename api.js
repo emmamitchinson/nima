@@ -58,6 +58,7 @@ module.exports.getLanguage = function(sender, callback, errorCallback) {
       json: {}
   }, function(error, response, body) {
       if (error) {
+        console.log('in error callback')
         errorCallback(error);
       }
       if (error) {
