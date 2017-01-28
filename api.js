@@ -89,7 +89,6 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
         method: 'GET',
         json: {}
     }, function(error, response, body) {
-        console.log("ReSPONSE:::",response.body)
         if (error) {
             console.log('Error getting nhs facility: ', error);
         } else if (response.body.error) {
@@ -97,7 +96,7 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
         }
         else {
             if (response.body['result'] != undefined && response.body['result'].length > 0)
-                callback(response.body['result']['name']);
+                callback(response.body['result'][0]['name']);
             else
                 callback("error");
         }
