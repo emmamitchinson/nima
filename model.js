@@ -11,12 +11,12 @@ Facility.prototype = {
     initialize: function(name,phone,website,email,latitude,longitude) {
         var secureWebsite = website ? website.replace("http", "https") : "https://www.google.co.uk/";
         if (!secureWebsite.startsWith("https")) {
-            secureWebsite = redirectUrl+ "https://" + secureWebsite;
+            secureWebsite = "https://" + secureWebsite;
         }
 
         this.name = name;
         this.phone = phone;
-        this.website = secureWebsite;
+        this.website = redirectUrl + secureWebsite;
         this.email = email;
         this.latitude = latitude;
         this.longitude = longitude;
