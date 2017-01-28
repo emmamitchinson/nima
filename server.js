@@ -362,9 +362,9 @@ function showTyping(flag,sender) {
         qs: { access_token : token },
         method: 'POST',
         json: {
-            recipient: { id : sender }
-        },
-        sender_action: "typing_on"
+            recipient: { id : sender },
+            sender_action: flag == true ? "typing_on" : "typing_off"
+        }
     }, function(error, response, body) {
         if (error) {
             console.log('Error sending message: ', error);
