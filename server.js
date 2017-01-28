@@ -460,10 +460,10 @@ function showTyping(flag,sender) {
 }
 
 function replyToSenderWithCarousel(sender, items) {
-  
+
     var elements = [];
     items.forEach(function(item){
-        var dict = { "title" : item.name, "subtitle" : item.phone };
+        var dict = { "title" : item.name, "subtitle" : item.phone ? item.phone : "No phone info" };
         elements.push(dict);
         console.log(item);
     });
