@@ -95,7 +95,6 @@ app.post('/webhook/', function (req, res) {
                 sayError(sender,BOT_STATUS.NEED_LOCATION,res);
                 break;
         }
-
     }
 });
 
@@ -390,7 +389,7 @@ function replyToSenderWithSearchOptions(sender, text) {
 setLanguageFromQuickReplies = (event) => {
   if (event.message && event.message.text) {
       text = event.message.text.toLowerCase();
-      console.log(text);
+      console.log(`Wot is da language ${text}`);
       //currentLang = 'English';
   }
 }
