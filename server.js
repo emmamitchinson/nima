@@ -178,7 +178,7 @@ function handleMenu(event, sender, req,res) {
         sender = event.sender.id;
 
         //Attachments LAT - LONG
-        if (event.message.attachments != undefined && event.message.attachments.length > 0 && event.message.attachments[0]['type'] == ['location'] && event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
+        if (event.message && event.message.attachments != undefined && event.message.attachments.length > 0 && event.message.attachments[0]['type'] == ['location'] && event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
             console.log("******** ATTACHMENT MSG RECEIVED");
             lat = event.message.attachments[0].payload.coordinates.lat;
             lng = event.message.attachments[0].payload.coordinates.long;
@@ -481,9 +481,11 @@ function whiteListDomain(domainsArray) {
 
 function replyToSenderWithCarousel(sender, items) {
 
-    // items.forEach(function(value){
-    //    var dict = ["" : ];
-    // });
+    var elements = [];
+    items.forEach(function(item){
+        var dict = { "title" : item.name, "subtitle" : item.phone, "email" : item.email };
+        elements.push(dict);
+    });
 
     item = items[0];
     console.log(item);
@@ -493,31 +495,32 @@ function replyToSenderWithCarousel(sender, items) {
             "type": "template",
             "payload": {
                 "template_type": "generic",
-                "elements": [
-                    {
-                        "title": item.name,
-                        //"image_url": "https://petersfancybrownhats.com/company_image.png",
-                        "subtitle": item.phone,
-                        "default_action": {
-                            "type": "web_url",
-                            "url": app_url_callback,
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": app_url_callback
-                        },
-                        "buttons": [
-                            {
-                                "type": "web_url",
-                                "url": app_url_callback,
-                                "title": "View Website"
-                            }, {
-                                "type": "postback",
-                                "title": "Search again",
-                                "payload": BOT_RESPONSES.SEARCH_OPTIONS_REPEAT
-                            }
-                        ]
-                    }
-                ]
+                "elements": elements
+                    // [
+                    // {
+                    //     "title": item.name,
+                    //     //"image_url": "https://petersfancybrownhats.com/company_image.png",
+                    //     "subtitle": item.phone,
+                    //     "default_action": {
+                    //         "type": "web_url",
+                    //         "url": app_url_callback,
+                    //         "messenger_extensions": true,
+                    //         "webview_height_ratio": "tall",
+                    //         "fallback_url": app_url_callback
+                    //     },
+                    //     "buttons": [
+                    //         {
+                    //             "type": "web_url",
+                    //             "url": app_url_callback,
+                    //             "title": "View Website"
+                    //         }, {
+                    //             "type": "postback",
+                    //             "title": "Search again",
+                    //             "payload": BOT_RESPONSES.SEARCH_OPTIONS_REPEAT
+                    //         }
+                    //     ]
+                    // }
+                    // ]
             }
         }
     };
