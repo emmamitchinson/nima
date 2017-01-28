@@ -104,10 +104,10 @@ function determineResponse(status, sender, event, res, req) {
           sayNeedLanguage(sender, res);
           break;
       case BOT_STATUS.LANG_PENDING:
-          setLanguageFromQuickReplies(event, res);
+          setLanguageFromQuickReplies(event, sender, res, req);
           break;
       case BOT_STATUS.NEED_LOCATION:
-          handleNeedLocation(event, sender, req, res);
+          sayLocationNeeded(sender, BOT_STATUS.menu, res);
           break;
       case BOT_STATUS.MENU:
           handleMenu(event, sender, req, res);
@@ -118,7 +118,7 @@ function determineResponse(status, sender, event, res, req) {
   }
 }
 
-function setLanguageFromQuickReplies(event, res) {
+function setLanguageFromQuickReplies(event, sender, res, req) {
     if (event.message && event.message.text) {
         text = event.message.text;
         const options = ['English', 'Francais'];
@@ -254,15 +254,10 @@ function introductoryGreet(sender, event, res, req) {
 }
 
 function sayLocationNeeded(sender, nextStatus, res) {
-    console.log(`The current lang is - ${currentLang}`)
     setTimeout(function () {
-        if (currentLang === null) {
-            sayNeedLanguage(sender, res);
-        } else {
           replyToSenderWithLocation(sender,BOT_RESPONSES.LOCATION);
           status = nextStatus;
           res.sendStatus(200);
-        }
     }, 1000);
 }
 
