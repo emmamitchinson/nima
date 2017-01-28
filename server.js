@@ -93,10 +93,10 @@ app.post('/webhook/', function (req, res) {
 
         switch (status) {
             case BOT_STATUS.NEED_GREET:
-                introductoryGreet(sender);
+                introductoryGreet(sender, res);
                 break;
             case BOT_STATUS.NEED_LANG:
-                setLanguageFromQuickReplies(event);
+                setLanguageFromQuickReplies(event, res);
                 break;
             case BOT_STATUS.NEED_LOCATION:
                 handleNeedLocation(event, sender, req,res);
@@ -215,7 +215,7 @@ function handleMenu(event, sender, req,res) {
 
 /* General methods */
 
-function introductoryGreet(sender) {
+function introductoryGreet(sender, res) {
     apis.getUserName(sender, function (firstName) {
         replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
         res.sendStatus(200);
