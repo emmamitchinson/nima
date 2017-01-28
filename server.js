@@ -120,6 +120,12 @@ function handleNeedLocation(event, sender, req,res) {
                     case "hey":
                         sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION,res);
                         break;
+                    case "English":
+                       setLanguageFromQuickReplies(text);
+                       break;
+                   case "Francais":
+                      setLanguageFromQuickReplies(text);
+                      break;
                     case text:
                         //api to get lat lng from postcode
                         apis.getLatLngFromPostcode(text, function (latitude,longitude) {
