@@ -115,6 +115,9 @@ function handleNeedLocation(event, sender, req,res) {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
+                    case "reset":
+                      sayReset(sender,res);
+                      break;
                     case "hi":
                     case "hello":
                     case "hey":
