@@ -62,7 +62,6 @@ var askedLangNoLocation = false;
 exports.token = token;
 
 /* GENERAL methods */
-
 app.listen(port, function () {
     console.log('The webhook is running on port ' + port);
     showGreetingsMessage();
