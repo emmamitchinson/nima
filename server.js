@@ -27,7 +27,7 @@ var BOT_STATUS = {
 };
 
 var BOT_SEARCH_OPTIONS = {
-    HOSPITALS: 'Hospital',
+    HOSPITALS: 'Hospitals',
     PHARMACIES: 'Pharmacy',
     GPS: 'GP'
 };
