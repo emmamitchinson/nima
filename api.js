@@ -120,7 +120,7 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
                 var domainArray = [];
                 var modelVar;
                 var count = 0;
-                response.body['result'].forEach(function(nhsItem){
+                response.body['result'].every(function(nhsItem){
                     modelVar = model.createFacility(
                         nhsItem['name'],
                         nhsItem['phone'],
