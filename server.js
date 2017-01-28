@@ -388,7 +388,7 @@ function replyToSenderWithSearchOptions(sender, text) {
     });
 }
 
-setLanguageFromQuickReplies(event) {
+setLanguageFromQuickReplies = (event) => {
   if (event.message && event.message.text) {
       text = event.message.text.toLowerCase();
       currentLang(text);
