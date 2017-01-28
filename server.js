@@ -167,7 +167,7 @@ function handleMenu(event, sender, req,res) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
                     case "reset":
-                        sayReset(sender, res);
+                        sayReset(sender,res);
                         break;
 
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
