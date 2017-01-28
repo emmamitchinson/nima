@@ -103,6 +103,12 @@ function handleNeedLanguage(event, sender, req,res) {
   // set language
   try {
     console.log('Attempting to get language');
+    status = BOT_STATUS.NEED_LOCATION;
+    lang = 'English';
+    replyToSender(sender, `We've set your langauge to ${lang}`);
+    res.sendStatus(200);
+    return;
+
     apis.getLanguage(sender, (res) => {
       status = BOT_STATUS.NEED_LOCATION;
       lang = res.languages[0]
