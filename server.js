@@ -114,9 +114,9 @@ function determineResponse(status, sender, event, res, req) {
   }
 }
 
-function handleNeedLocation(event, sender, req,res) {
-        event = req.body.entry[0].messaging[i];
-        sender = event.sender.id;
+function handleNeedLocation(event, sender, req, res) {
+        //event = req.body.entry[0].messaging[i];
+        //sender = event.sender.id;
 
         //Attachments LAT - LONG
         if (event.message.attachments != undefined && event.message.attachments.length > 0 && event.message.attachments[0]['type'] == ['location'] && event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
