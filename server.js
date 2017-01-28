@@ -500,7 +500,7 @@ function replyToSenderWithCarousel(sender, items) {
                         "subtitle": item.phone,
                         "default_action": {
                             "type": "web_url",
-                            "url": item.latitude,
+                            "url": 'https://petersfancybrownhats.com/',
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
                             "fallback_url": "app_url_callback"
