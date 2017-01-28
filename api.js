@@ -43,3 +43,22 @@ module.exports.getUserName = function (sender, callback) {
         }
     });
 };
+
+/* Get nearest nhs facility details for menu */
+module.exports.getNHSFacility = function (type, lat, lng, callback) {
+    request({
+        url: 'https://www.data.gov.uk/data/api/service/health/'+type+'/nearest?lat='+lat+'&lon='+lng,
+        qs: {},
+        method: 'GET',
+        json: {}
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error getting nhs facility: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+        else {
+            callback(response.body['result']['name']);
+        }
+    });
+};
