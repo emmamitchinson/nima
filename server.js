@@ -388,9 +388,12 @@ function replyToSenderWithSearchOptions(sender, text) {
 
 setLanguageFromQuickReplies = (event) => {
   if (event.message && event.message.text) {
-      text = event.message.text.toLowerCase();
-      console.log(`Wot is da language ${text}`);
-      //currentLang = 'English';
+      text = event.message.text;
+      const options = ['English', 'Francais'];
+      if (options.indexOf(text) != -1) {
+        console.log(`Setting language ${text}`);
+        currentLang = text;
+      }
   }
 }
 
@@ -398,7 +401,7 @@ function showTyping(flag,sender) {
     typing = "typing_off";
     if (flag == true ) {
         typing = "typing_on";
-    } 
+    }
 
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
