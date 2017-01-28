@@ -213,6 +213,7 @@ function handleMenu(event, sender, req,res) {
 function introductoryGreet(sender) {
     apis.getUserName(sender, function (firstName) {
         replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
+        res.sendStatus(200);
     });
     console.log("******** GREETING MSG RECEIVED");
 }
