@@ -397,13 +397,18 @@ setLanguageFromQuickReplies = (event) => {
 }
 
 function showTyping(flag,sender) {
+    typing = "typing_off";
+    if (flag == true ) {
+        typing = "typing_on";
+    } 
+
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: { access_token : token },
         method: 'POST',
         json: {
             recipient: { id : sender },
-            sender_action: flag == true ? "typing_on" : "typing_off"
+            sender_action: typing
         }
     }, function(error, response, body) {
         if (error) {
