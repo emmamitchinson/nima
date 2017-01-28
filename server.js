@@ -90,8 +90,7 @@ app.post('/webhook/', function (req, res) {
 
         console.log(`Current status: ${status}`);
         console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`);
-
-        determineResponse(status, event, res, req);
+        determineResponse(status, sender, event, res, req);
     }
 });
 
@@ -220,6 +219,7 @@ function handleMenu(event, sender, req,res) {
 /* General methods */
 
 function introductoryGreet(sender, event, res, req) {
+    console.log(sender);
     apis.getUserName(sender, function (firstName) {
         if (currentLang === undefined) {
           status = BOT_STATUS.NEED_LANG;
