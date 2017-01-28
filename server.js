@@ -252,7 +252,7 @@ function introductoryGreet(sender, event, res, req) {
 
         replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
         determineResponse(status, sender, event, res, req);
-        //res.sendStatus(200);
+        res.sendStatus(200);
     });
     console.log("******** GREETING MSG RECEIVED");
 }
