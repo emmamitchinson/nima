@@ -1,5 +1,5 @@
 
-var redirectUrl = "http://wwww.marioeguiluz.com/redirect?q=";
+var redirectUrl = "http://www.marioeguiluz.com/redirect?q=";
 
 function Facility(name,phone,website,email,latitude,longitude) {
     if (!(this instanceof Facility)) return new Facility(name,phone,website,email,latitude,longitude);
