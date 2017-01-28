@@ -182,8 +182,13 @@ function handleMenu(event, sender, req,res) {
             lat = event.message.attachments[0].payload.coordinates.lat;
             lng = event.message.attachments[0].payload.coordinates.long;
             saySearchOptions(sender,BOT_STATUS.MENU,res);
-        }
-        else {
+        }else if (event['postback']['payload']) {
+            switch (event['postback']['payload'].toLowerCase()) {
+                case BOT_RESPONSES.SEARCH_OPTIONS_REPEAT.toLowerCase():
+                    saySearchOptions(sender,BOT_STATUS.MENU,res);
+                    break;
+            }
+        } else {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
