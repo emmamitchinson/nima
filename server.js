@@ -21,7 +21,6 @@ var BOT_RESPONSES  = {
 };
 
 var BOT_STATUS = {
-    NEED_LANG: 0,
     NEED_LOCATION : 1,
     MENU : 2
 };
@@ -42,6 +41,7 @@ var secret = "nimaInHackathon";
 var status = BOT_STATUS.NEED_LANG;
 var lat = 0;
 var lng = 0;
+var currentLang = null;
 
 exports.token = token;
 
@@ -84,9 +84,6 @@ app.post('/webhook/', function (req, res) {
         console.log(`Current status: ${status}`);
 
         switch (status) {
-            case BOT_STATUS.NEED_LANG:
-                handleNeedLanguage(event, sender, req,res);
-                break;
             case BOT_STATUS.NEED_LOCATION:
                 handleNeedLocation(event, sender, req,res);
                 break;
@@ -101,15 +98,14 @@ app.post('/webhook/', function (req, res) {
     }
 });
 
-function handleNeedLanguage(event, sender, req,res) {
+function handleNeedLanguage(sender, res) {
   // get language
   // set language
   try {
     console.log('Attempting to get language');
-    status = BOT_STATUS.NEED_LOCATION;
-    lang = 'English';
-    replyToSender(sender, `We've set your langauge to ${lang}`);
-    res.sendStatus(200);
+    currentLang = 'English';
+    replyToSender(sender, `We've set your langauge to ${currentLang}`);
+    sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION, res);
     return;
 
     // get below to handle the error
@@ -234,9 +230,13 @@ function sayLocationNeeded(sender, nextStatus, res) {
     apis.getUserName(sender, function (firstName) {
         replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
         setTimeout(function () {
-            replyToSenderWithLocation(sender,BOT_RESPONSES.LOCATION);
-            status = nextStatus;
-            res.sendStatus(200);
+            if (currentLang === null) {
+                handleNeedLanguage(sender, res);
+            } else {
+              replyToSenderWithLocation(sender,BOT_RESPONSES.LOCATION);
+              status = nextStatus;
+              res.sendStatus(200);
+            }
         }, 1000);
     })
 }
