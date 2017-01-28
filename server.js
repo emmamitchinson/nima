@@ -480,15 +480,15 @@ function replyToSenderWithCarousel(sender, items) {
                         "subtitle": item.phone,
                         "default_action": {
                             "type": "web_url",
-                            "url": item.latitude,
+                            "url": app_url_callback,
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "app_url_callback"
+                            "fallback_url": app_url_callback
                         },
                         "buttons": [
                             {
                                 "type": "web_url",
-                                "url": "https://petersfancybrownhats.com",
+                                "url": app_url_callback,
                                 "title": "View Website"
                             }, {
                                 "type": "postback",
