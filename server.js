@@ -464,14 +464,14 @@ function replyToSenderWithCarousel(sender, items) {
     items.forEach(function(item){
         var urlAction = {
             "type": "web_url",
-            "url": item.website.replace("https://www.marioeguiluz.com/redirect?q=", ""),
+            "url": item.website,//.replace("https://www.marioeguiluz.com/redirect?q=", ""),
             "messenger_extensions": false,
             "webview_height_ratio": "tall"
             //, "fallback_url": item.website
         };
         var urlButton = {
             "type": "web_url",
-            "url": item.website.replace("https://www.marioeguiluz.com/redirect?q=", ""),
+            "url": item.website,//.replace("https://www.marioeguiluz.com/redirect?q=", ""),
             "title": "View Website"
         };
         var mapButton = {

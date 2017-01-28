@@ -152,8 +152,8 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
                     count += 1;
                     return count <= 4;
                      });
-                whiteListDomainRemove(domainArray);
-                whiteListDomain(["https://www.marioeguiluz.com"]);
+                //whiteListDomainRemove(domainArray);
+                //whiteListDomain(["https://www.marioeguiluz.com"]);
                 callback(dataArray);
             }
             else

@@ -16,7 +16,7 @@ Facility.prototype = {
 
         this.name = name;
         this.phone = phone;
-        this.website = redirectUrl + secureWebsite;
+        this.website = website;//redirectUrl + secureWebsite;
         this.email = email;
         this.latitude = latitude;
         this.longitude = longitude;
