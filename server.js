@@ -241,7 +241,7 @@ function sayNeedLanguage(sender, res) {
     console.log('Attempting to get language');
     currentLang = 'English';
     replyToSender(sender, `We've set your language to ${currentLang}, is this right`);
-    askForLanguage();
+    setTimeout(askForLanguage, 1000);
     res.sendStatus(200);
     //sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION, res);
     return;
