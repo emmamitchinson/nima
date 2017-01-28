@@ -391,7 +391,8 @@ function replyToSenderWithSearchOptions(sender, text) {
 setLanguageFromQuickReplies = (event) => {
   if (event.message && event.message.text) {
       text = event.message.text.toLowerCase();
-      currentLang(text);
+      console.log(text);
+      currentLang = 'English';
   }
 }
 
