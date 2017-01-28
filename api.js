@@ -1,8 +1,6 @@
-var app = require('express')();
-var bodyParser  = require('body-parser');
 var request = require('request');
 var server = require('./server');
-
+var model = require('./model');
 
 var API_SEARCH_TYPES = {
     HOSPITALS: 'hospitals',
@@ -98,8 +96,15 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
             console.log('Error: ', response.body.error);
         }
         else {
-            if (response.body['result'] != undefined && response.body['result'].length > 0)
-                callback(response.body['result'][0]['name']);
+            if (response.body['result'] != undefined && response.body['result'].length > 0){
+                model.NHSFacility(response.body['result'][0]['name'],
+                                  response.body['result'][0]['phone'],
+                                  response.body['result'][0]['website'],
+                                  response.body['result'][0]['email'],
+                                  response.body['result'][0]['latitude    '],
+                                  response.body['result'][0]['longitude']);
+                callback(model.NHSFacility);
+            }
             else
                 callback("error");
         }
