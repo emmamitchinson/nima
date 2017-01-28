@@ -228,7 +228,6 @@ function sayNeedLanguage(sender, res) {
     askedLangNoLocation = true;
     console.log('Attempting to get language');
     currentLang = 'English';
-    replyToSender(sender, `We've set your language to ${currentLang}, is this right`);
     askForLanguage();
     res.sendStatus(200);
     //sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION, res);
@@ -243,7 +242,7 @@ function sayNeedLanguage(sender, res) {
 
 function askForLanguage() {
   messageData = {
-      "text" : text,
+      "text" : `We've set your language to ${currentLang}, would you like to change it?`,
       "quick_replies":[
           {
               "content_type": "text",
@@ -400,7 +399,7 @@ function showTyping(flag,sender) {
     typing = "typing_off";
     if (flag == true ) {
         typing = "typing_on";
-    } 
+    }
 
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
