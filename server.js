@@ -90,30 +90,33 @@ app.post('/webhook/', function (req, res) {
 
         console.log(`Current status: ${status}`);
         console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`);
-
-        switch (status) {
-            case BOT_STATUS.NEED_GREET:
-                introductoryGreet(sender);
-                break;
-            case BOT_STATUS.NEED_LANG:
-                setLanguageFromQuickReplies(event);
-                break;
-            case BOT_STATUS.NEED_LOCATION:
-                handleNeedLocation(event, sender, req,res);
-                break;
-            case BOT_STATUS.MENU:
-                handleMenu(event, sender, req,res);
-                break;
-            default:
-                sayError(sender,BOT_STATUS.NEED_GREET,res);
-                break;
-        }
+        determineResponse(status, sender, event, res, req);
     }
 });
 
-function handleNeedLocation(event, sender, req,res) {
-        event = req.body.entry[0].messaging[i];
-        sender = event.sender.id;
+function determineResponse(status, sender, event, res, req) {
+  switch (status) {
+      case BOT_STATUS.NEED_GREET:
+          introductoryGreet(sender, event, res, req);
+          break;
+      case BOT_STATUS.NEED_LANG:
+          setLanguageFromQuickReplies(event, res);
+          break;
+      case BOT_STATUS.NEED_LOCATION:
+          handleNeedLocation(event, sender, req, res);
+          break;
+      case BOT_STATUS.MENU:
+          handleMenu(event, sender, req, res);
+          break;
+      default:
+          sayError(sender, BOT_STATUS.NEED_GREET, res);
+          break;
+  }
+}
+
+function handleNeedLocation(event, sender, req, res) {
+        //event = req.body.entry[0].messaging[i];
+        //sender = event.sender.id;
 
         //Attachments LAT - LONG
         if (event.message.attachments != undefined && event.message.attachments.length > 0 && event.message.attachments[0]['type'] == ['location'] && event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
@@ -126,7 +129,7 @@ function handleNeedLocation(event, sender, req,res) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
                     case "reset":
-                      sayReset(sender,res);
+                      sayReset(sender, res);
                       break;
                     default:
                         //api to get lat lng from postcode
@@ -164,7 +167,7 @@ function handleMenu(event, sender, req,res) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
                     case "reset":
-                        sayReset(sender,res);
+                        sayReset(sender, res);
                         break;
 
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
@@ -215,9 +218,20 @@ function handleMenu(event, sender, req,res) {
 
 /* General methods */
 
-function introductoryGreet(sender) {
+function introductoryGreet(sender, event, res, req) {
+    console.log(sender);
     apis.getUserName(sender, function (firstName) {
+      console.log(status, currentLang);
+        if (currentLang === undefined || currentLang === null) {
+          console.log(currentLang);
+          status = BOT_STATUS.NEED_LANG;
+        } else {
+          status = BOT_STATUS.NEED_LOCATION;
+        }
+
         replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
+        determineResponse(status, sender, event, res, req);
+        //res.sendStatus(200);
     });
     console.log("******** GREETING MSG RECEIVED");
 }
@@ -244,7 +258,7 @@ function sayNeedLanguage(sender, res) {
             replyToSenderWithLanguages(sender, currentLang);
         }, 1000);
         res.sendStatus(200);
-        
+
         return;
     } catch(e) {
         status = BOT_STATUS.NEED_LOCATION;
@@ -275,7 +289,7 @@ function sayReset(sender, res) {
     status = BOT_STATUS.NEED_GREET;
     currentLang = null;
     askedLangNoLocation = false;
-    replyToSender(sender,BOT_RESPONSES.RESET);
+    replyToSender(sender, BOT_RESPONSES.RESET);
     res.sendStatus(200);
 }
 
