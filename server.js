@@ -25,8 +25,9 @@ var BOT_RESPONSES  = {
 var BOT_STATUS = {
     NEED_GREET : 0,
     NEED_LANG : 1,
-    NEED_LOCATION : 2,
-    MENU : 3
+    LANG_PENDING : 2,
+    NEED_LOCATION : 3,
+    MENU : 4
 };
 
 var BOT_SEARCH_OPTIONS = {
@@ -100,6 +101,9 @@ function determineResponse(status, sender, event, res, req) {
           introductoryGreet(sender, event, res, req);
           break;
       case BOT_STATUS.NEED_LANG:
+          sayNeedLanguage(sender, res);
+          break;
+      case BOT_STATUS.LANG_PENDING:
           setLanguageFromQuickReplies(event, res);
           break;
       case BOT_STATUS.NEED_LOCATION:
@@ -114,10 +118,21 @@ function determineResponse(status, sender, event, res, req) {
   }
 }
 
-function handleNeedLocation(event, sender, req, res) {
-        //event = req.body.entry[0].messaging[i];
-        //sender = event.sender.id;
+setLanguageFromQuickReplies = (event, res) => {
+    if (event.message && event.message.text) {
+        text = event.message.text;
+        const options = ['English', 'Francais'];
+        if (options.indexOf(text) != -1) {
+            console.log(`Setting language ${text}`);
+            currentLang = text;
+        }
+    }
 
+    status = BOT_STATUS.NEED_LOCATION;
+    determineResponse(status, sender, event, res, req);
+}
+
+function handleNeedLocation(event, sender, req, res) {
         //Attachments LAT - LONG
         if (event.message.attachments != undefined && event.message.attachments.length > 0 && event.message.attachments[0]['type'] == ['location'] && event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
             lat = event.message.attachments[0].payload.coordinates.lat;
@@ -167,14 +182,14 @@ function handleMenu(event, sender, req,res) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
                     case "reset":
-                        sayReset(sender, res);
+                        sayReset(sender,res);
                         break;
 
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
                         showTyping(true, sender);
-                        apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(nhsFacility){
+                        apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(items){
                             //replyToSender(sender,name);
-                            replyToSenderWithCarousel(sender,nhsFacility);
+                            replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
                             res.sendStatus(200);
                         });
@@ -221,7 +236,9 @@ function handleMenu(event, sender, req,res) {
 function introductoryGreet(sender, event, res, req) {
     console.log(sender);
     apis.getUserName(sender, function (firstName) {
-        if (currentLang === undefined) {
+      console.log(status, currentLang);
+        if (currentLang === undefined || currentLang === null) {
+          console.log(currentLang);
           status = BOT_STATUS.NEED_LANG;
         } else {
           status = BOT_STATUS.NEED_LOCATION;
@@ -255,6 +272,7 @@ function sayNeedLanguage(sender, res) {
         setTimeout(function() {
             replyToSenderWithLanguages(sender, currentLang);
         }, 1000);
+        status = BOT_STATUS.LANG_PENDING;
         res.sendStatus(200);
 
         return;
@@ -418,21 +436,6 @@ function replyToSenderWithSearchOptions(sender, text) {
     });
 }
 
-setLanguageFromQuickReplies = (event, res) => {
-  if (event.message && event.message.text) {
-      text = event.message.text;
-      const options = ['English', 'Francais'];
-      if (options.indexOf(text) != -1) {
-        console.log(`Setting language ${text}`);
-        currentLang = text;
-      }
-  }
-
-  if (res) {
-    res.sendStatus(200);
-  }
-}
-
 function showTyping(flag,sender) {
     typing = "typing_off";
     if (flag == true ) {
@@ -475,7 +478,15 @@ function whiteListDomain(domainsArray) {
     });
 }
 
-function replyToSenderWithCarousel(sender, item) {
+function replyToSenderWithCarousel(sender, items) {
+
+    // items.forEach(function(value){
+    //    var dict = ["" : ];
+    // });
+
+    item = items[0];
+    console.log(item);
+
     messageData = {
         "attachment": {
             "type": "template",
