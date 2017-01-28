@@ -25,8 +25,9 @@ var BOT_RESPONSES  = {
 var BOT_STATUS = {
     NEED_GREET : 0,
     NEED_LANG : 1,
-    NEED_LOCATION : 2,
-    MENU : 3
+    LANG_PENDING : 2,
+    NEED_LOCATION : 3,
+    MENU : 4
 };
 
 var BOT_SEARCH_OPTIONS = {
@@ -100,6 +101,9 @@ function determineResponse(status, sender, event, res, req) {
           introductoryGreet(sender, event, res, req);
           break;
       case BOT_STATUS.NEED_LANG:
+          sayNeedLanguage(sender, res);
+          break;
+      case BOT_STATUS.LANG_PENDING:
           setLanguageFromQuickReplies(event, res);
           break;
       case BOT_STATUS.NEED_LOCATION:
@@ -111,6 +115,23 @@ function determineResponse(status, sender, event, res, req) {
       default:
           sayError(sender, BOT_STATUS.NEED_GREET, res);
           break;
+  }
+}
+
+setLanguageFromQuickReplies = (event, res) => {
+  if (event.message && event.message.text) {
+      text = event.message.text;
+      const options = ['English', 'Francais'];
+      if (options.indexOf(text) != -1) {
+        console.log(`Setting language ${text}`);
+        currentLang = text;
+      }
+  }
+
+  status = BOT_STATUS.NEED_LOCATION;
+
+  if (res) {
+    res.sendStatus(200);
   }
 }
 
@@ -257,6 +278,7 @@ function sayNeedLanguage(sender, res) {
         setTimeout(function() {
             replyToSenderWithLanguages(sender, currentLang);
         }, 1000);
+        status = BOT_STATUS.LANG_PENDING;
         res.sendStatus(200);
 
         return;
@@ -418,21 +440,6 @@ function replyToSenderWithSearchOptions(sender, text) {
             console.log('Error: ', response.body.error);
         }
     });
-}
-
-setLanguageFromQuickReplies = (event, res) => {
-  if (event.message && event.message.text) {
-      text = event.message.text;
-      const options = ['English', 'Francais'];
-      if (options.indexOf(text) != -1) {
-        console.log(`Setting language ${text}`);
-        currentLang = text;
-      }
-  }
-
-  if (res) {
-    res.sendStatus(200);
-  }
 }
 
 function showTyping(flag,sender) {
