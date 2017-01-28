@@ -454,7 +454,7 @@ function whiteListDomain(domain) {
         method: 'POST',
         json: {
             "setting_type" : "domain_whitelisting",
-            "whitelisted_domains" : ["https://petersfancyapparel.com"],
+            "whitelisted_domains" : ["https://petersfancyapparel.com", "https://peterssendreceiveapp.ngrok.io"],
             "domain_action_type": "add"
         }
     }, function(error, response, body) {
