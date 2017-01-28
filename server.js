@@ -65,6 +65,7 @@ exports.token = token;
 
 app.listen(port, function () {
     console.log('The webhook is running on port ' + port);
+    showGreetingsMessage();
 });
 
 /* GET - GENERAL WEBHOOK */
@@ -99,7 +100,6 @@ app.post('/webhook/', function (req, res) {
 
         console.log(`Current status: ${status}`);
         console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`);
-        showGreetingsMessage();
         determineResponse(status, sender, event, res, req);
     }
 });
