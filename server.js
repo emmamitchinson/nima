@@ -17,9 +17,8 @@ var BOT_RESPONSES  = {
     LOCATION     : 'So...tell me your postcode, or send me your location to help you out',
     THANKS : "Thank you",
     SEARCH_OPTIONS: "Thank you!!! Now I can find for you the nearest...",
-    ERROR : 'Sorry, you explain yourself very bad...',
-    INVALID_POSTCODE : "Mmm, doesn't look like a valid postcode, want to give another try?"
- };
+    ERROR : 'Sorry, you explain yourself very bad...'
+};
 
 var BOT_STATUS = {
     NEED_LOCATION : 1,
@@ -84,7 +83,6 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
 
         console.log(`Current status: ${status}`);
-        console.log(typeof status);
         console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`);
 
         switch (status) {
@@ -122,19 +120,13 @@ function handleNeedLocation(event, sender, req,res) {
                     case "hey":
                         sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION,res);
                         break;
-                    case text:
+                    case "w106hs":
                         //api to get lat lng from postcode
                         apis.getLatLngFromPostcode(text, function (latitude,longitude) {
-                            if(latitude != 0 && longitude != 0) {
-                                lat = latitude;
-                                lng = longitude;
-                                console.log("Coordinates " + lat + "," + lng);
-                                saySearchOptions(sender, BOT_STATUS.MENU, res);
-                            }
-                            else {
-                                replyToSender(sender, BOT_RESPONSES.INVALID_POSTCODE);
-                                res.sendStatus(200);
-                            }
+                            lat = latitude;
+                            lng = longitude;
+                            console.log("Coordinates "+ lat + "," + lng);
+                            saySearchOptions(sender,BOT_STATUS.MENU,res);
                         });
                         break;
                     default:
