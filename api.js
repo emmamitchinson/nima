@@ -13,7 +13,7 @@ exports.searchTypes = API_SEARCH_TYPES;
 function whiteListDomain(domainsArray) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/thread_settings',
-        qs: { access_token : token },
+        qs: { access_token : server.token },
         method: 'POST',
         json: {
             "setting_type" : "domain_whitelisting",
