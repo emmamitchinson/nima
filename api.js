@@ -50,13 +50,16 @@ module.exports.getUserName = function (sender, callback) {
  * @param  {Function} callback [description]
  * @return {[type]}            [description]
  */
-module.exports.getLanguage = function(sender, callback) {
+module.exports.getLanguage = function(sender, callback, errorCallback) {
   request({
       url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=id,name,languages',
       qs: { access_token : server.token },
       method: 'GET',
       json: {}
   }, function(error, response, body) {
+      if (error) {
+        errorCallback(error);
+      }
       if (error) {
           console.log('Error getting name: ', error);
       } else if (response.body.error) {

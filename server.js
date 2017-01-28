@@ -108,6 +108,12 @@ function handleNeedLanguage(event, sender, req,res) {
       lang = res.languages[0]
       replyToSender(sender, `We've set your langauge to ${lang}`);
       res.sendStatus(200);
+    }, (e) => {
+      console.log(e)
+      status = BOT_STATUS.NEED_LOCATION;
+      lang = 'English';
+      replyToSender(sender, `We've set your langauge to ${lang}`);
+      res.sendStatus(200);
     });
   } catch(e) {
     console.log(e)
