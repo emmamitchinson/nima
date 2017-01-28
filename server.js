@@ -200,7 +200,7 @@ function handleMenu(event, sender, req,res) {
                         break;
                     case BOT_SEARCH_OPTIONS.PHARMACIES.toLowerCase():
                         showTyping(true, sender);
-                        apis.getNHSFacility(apis.searchTypes.PHARMACIES,lat,lng,function(nhsFacility){
+                        apis.getNHSFacility(apis.searchTypes.PHARMACIES,lat,lng,function(items){
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
                             res.sendStatus(200);
@@ -208,7 +208,7 @@ function handleMenu(event, sender, req,res) {
                         break;
                     case BOT_SEARCH_OPTIONS.GPS.toLowerCase():
                         showTyping(true, sender);
-                        apis.getNHSFacility(apis.searchTypes.GPS,lat,lng,function(nhsFacility){
+                        apis.getNHSFacility(apis.searchTypes.GPS,lat,lng,function(items){
                             replyToSenderWithCarousel(sender,items);
                             showTyping(false, sender);
                             res.sendStatus(200);
