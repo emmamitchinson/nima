@@ -479,7 +479,12 @@ function replyToSenderWithCarousel(sender, items) {
             "url": "https://maps.google.com/?q="+item.latitude+","+item.longitude,
             "title": "Find Us"
         };
-        var buttons = [urlButton, mapButton];
+        var searchAgainButton = {
+            "type":"postback",
+            "title":"Search Again",
+            "payload":BOT_RESPONSES.SEARCH_OPTIONS_REPEAT
+        };
+        var buttons = [urlButton, mapButton, searchAgainButton];
         var dict = { "title" : item.name, "subtitle" : item.phone ? item.phone : "No phone info", "default_action" : urlAction , "buttons" : buttons };
         elements.push(dict);
         console.log(item);
