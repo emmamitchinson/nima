@@ -129,7 +129,9 @@ setLanguageFromQuickReplies = (event, res) => {
     }
 
     status = BOT_STATUS.NEED_LOCATION;
-    determineResponse(status, sender, event, res, req);
+    replyToSender(sender, `We've set your language to ${currentLang}`);
+    console.log("******** LANGUAGE CONFIRMATION MSG RECEIVED");
+    res.sendStatus(200);
 }
 
 function handleNeedLocation(event, sender, req, res) {
