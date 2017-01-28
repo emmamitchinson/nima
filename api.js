@@ -95,7 +95,10 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
             console.log('Error: ', response.body.error);
         }
         else {
-            callback(response.body['result']['name']);
+            if (response.body['result'] != undefined && response.body['result'].length > 0)
+                callback(response.body['result']['name']);
+            else
+                callback("error");
         }
     });
 };
