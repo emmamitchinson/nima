@@ -175,20 +175,26 @@ function handleMenu(event, sender, req,res) {
                         break;
 
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
+                        showTyping(true, sender);
                         apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(name){
                             replyToSender(sender,name);
+                            showTyping(false, sender);
                             res.sendStatus(200);
                         });
                         break;
                     case BOT_SEARCH_OPTIONS.PHARMACIES.toLowerCase():
+                        showTyping(true, sender);
                         apis.getNHSFacility(apis.searchTypes.PHARMACIES,lat,lng,function(name){
                             replyToSender(sender,name);
+                            showTyping(false, sender);
                             res.sendStatus(200);
                         });
                         break;
                     case BOT_SEARCH_OPTIONS.GPS.toLowerCase():
+                        showTyping(true, sender);
                         apis.getNHSFacility(apis.searchTypes.GPS,lat,lng,function(name){
                             replyToSender(sender,name);
+                            showTyping(false, sender);
                             res.sendStatus(200);
                         });
                         break;
@@ -348,3 +354,24 @@ function replyToSenderWithSearchOptions(sender, text) {
         }
     });
 }
+
+function showTyping(flag,sender) {
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token : token },
+        method: 'POST',
+        json: {
+            recipient: { id : sender }
+
+        },
+        sender_action: flag ? "typing_on" : "typing_off"
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
+}
+
+

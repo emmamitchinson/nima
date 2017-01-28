@@ -83,6 +83,7 @@ module.exports.getLanguage = function(sender, callback, errorCallback) {
 
 /* Get nearest nhs facility details for menu */
 module.exports.getNHSFacility = function (type, lat, lng, callback) {
+    
     request({
         url: 'https://www.data.gov.uk/data/api/service/health/'+type+'/nearest?lat='+lat+'&lon='+lng,
         qs: {},
