@@ -38,10 +38,11 @@ var BOT_SEARCH_OPTIONS = {
 var port = process.env.PORT || 8080;
 var token = "EAAESs7ymteEBAHQrZC3y2RQrXswMilWUGjPZBNyIuMVndVgBktVMSbRzEEkWPdnQXvRXdOCPxNDDfRzQ2lo9yXUyYx2y4jFPX3wDSw8yZBSNUX7MtTKB207imhW29ofQUSuFZAacf0ok417RHQZB40JZAkf1lAMO0FvAbdck1XrwZDZD";
 var secret = "nimaInHackathon";
-var status = BOT_STATUS.NEED_LANG;
+var status = BOT_STATUS.NEED_LOCATION;
 var lat = 0;
 var lng = 0;
 var currentLang = null;
+var askedLangNoLocation = false;
 
 exports.token = token;
 
@@ -99,31 +100,16 @@ app.post('/webhook/', function (req, res) {
 });
 
 function handleNeedLanguage(sender, res) {
-  // get language
+  // ask for langauge or default to english
   // set language
   try {
+    askedLangNoLocation = true;
     console.log('Attempting to get language');
     currentLang = 'English';
     replyToSender(sender, `We've set your langauge to ${currentLang}`);
     sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION, res);
     return;
-
-    // get below to handle the error
-
-    apis.getLanguage(sender, (res) => {
-      status = BOT_STATUS.NEED_LOCATION;
-      lang = res.languages[0]
-      replyToSender(sender, `We've set your langauge to ${lang}`);
-      res.sendStatus(200);
-    }, (e) => {
-      console.log(e);
-      status = BOT_STATUS.NEED_LOCATION;
-      lang = 'English';
-      replyToSender(sender, `We've set your langauge to ${lang}`);
-      res.sendStatus(200);
-    });
   } catch(e) {
-    console.log(e);
     status = BOT_STATUS.NEED_LOCATION;
     lang = 'English';
     replyToSender(sender, `We've set your langauge to ${lang}`);
@@ -233,8 +219,11 @@ function handleMenu(event, sender, req,res) {
 
 function sayLocationNeeded(sender, nextStatus, res) {
     console.log("******** GREETING MSG RECEIVED");
+    console.log(`The current lang is - ${currentLang}`)
     apis.getUserName(sender, function (firstName) {
-        replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
+        if (askedLangNoLocation === false) {
+          replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
+        }
         setTimeout(function () {
             if (currentLang === null) {
                 handleNeedLanguage(sender, res);
@@ -265,6 +254,8 @@ function sayReset(sender, res) {
     lat = 0;
     lng = 0;
     status = BOT_STATUS.NEED_LOCATION;
+    currentLang = null;
+    askedLangNoLocation = false;
     replyToSender(sender,BOT_RESPONSES.RESET);
     res.sendStatus(200);
 }
