@@ -120,7 +120,7 @@ function handleNeedLocation(event, sender, req,res) {
                     case "hey":
                         sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION,res);
                         break;
-                    case text:
+                    default:
                         //api to get lat lng from postcode
                         apis.getLatLngFromPostcode(text, function (latitude,longitude) {
                             if(latitude != 0 && longitude != 0) {
@@ -134,9 +134,9 @@ function handleNeedLocation(event, sender, req,res) {
                             }
                         });
                         break;
-                    default:
-                        sayError(sender, BOT_STATUS.NEED_LOCATION, res);
-                        break;
+                    // default:
+                    //     sayError(sender, BOT_STATUS.NEED_LOCATION, res);
+                    //     break;
                 }
             } else {
                 sayError(sender, BOT_STATUS.NEED_LOCATION, res);
