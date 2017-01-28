@@ -119,18 +119,6 @@ function handleNeedLocation(event, sender, req,res) {
                     case "reset":
                       sayReset(sender,res);
                       break;
-                    case "hi":
-                    case "hello":
-                    case "hey":
-                        sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION,res);
-                        break;
-                    case "English":
-                       setLanguageFromQuickReplies(text, res);
-                       break;
-                   case "Francais":
-                        setLanguageFromQuickReplies(text, res);
-                      break;
-
                     default:
                         //api to get lat lng from postcode
                         apis.getLatLngFromPostcode(text, function (latitude,longitude) {
@@ -218,13 +206,15 @@ function handleMenu(event, sender, req,res) {
 
 /* General methods */
 
-function sayLocationNeeded(sender, nextStatus, res) {
+function introductoryGreet(sender, firstName) {
+    replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
     console.log("******** GREETING MSG RECEIVED");
+}
+
+function sayLocationNeeded(sender, nextStatus, res) {
     console.log(`The current lang is - ${currentLang}`)
     apis.getUserName(sender, function (firstName) {
-        if (askedLangNoLocation === false) {
-          replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
-        }
+        introductoryGreet(sender, firstName);
         setTimeout(function () {
             if (currentLang === null) {
                 sayNeedLanguage(sender, res);
@@ -238,60 +228,26 @@ function sayLocationNeeded(sender, nextStatus, res) {
 }
 
 function sayNeedLanguage(sender, res) {
-  // ask for language or default to english
-  // set language
-  try {
-    askedLangNoLocation = true;
-    console.log('Attempting to get language');
     currentLang = 'English';
-    replyToSender(sender, `We've set your language to ${currentLang}, is this right`);
-    setTimeout(askForLanguage, 1000);
-    res.sendStatus(200);
-    //sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION, res);
-    return;
-  } catch(e) {
-    status = BOT_STATUS.NEED_LOCATION;
-    lang = 'English';
-    replyToSender(sender, `We've set your language to ${lang}`);
-    res.sendStatus(200);
-  }
+    try {
+        askedLangNoLocation = true;
+        console.log('Attempting to get language');
+        setTimeout(function() {
+            replyToSenderWithLanguages(sender, currentLang);
+        }, 1000);
+        res.sendStatus(200);
+        
+        return;
+    } catch(e) {
+        status = BOT_STATUS.NEED_LOCATION;
+        replyToSender(sender, `We've set your language to ${currentLang}`);
+        console.log("******** LANGUAGE CONFIRMATION MSG RECEIVED");
+        res.sendStatus(200);
+    }
 }
-
-function askForLanguage() {
-  messageData = {
-      "text" : `We've set your language to ${currentLang}, would you like to change it?`,
-      "quick_replies":[
-          {
-              "content_type": "text",
-              "title": "English",
-              "payload": "English"
-          },
-          {
-              "content_type": "text",
-              "title": "Francais",
-              "payload": "Francais"
-          }
-      ]
-  };
-  request({
-      url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: { access_token : token },
-      method: 'POST',
-      json: {
-          recipient: { id : sender },
-          message: messageData
-      }
-  }, function(error, response, body) {
-      if (error) {
-          console.log('Error sending message: ', error);
-      } else if (response.body.error) {
-          console.log('Error: ', response.body.error);
-      }
-  });
-}
-
 
 function sayThanks(sender, nextStatus, res) {
+    console.log("******** THANKS");
     replyToSender(sender, BOT_RESPONSES.THANKS);
     status = nextStatus;
     res.sendStatus(200);
@@ -343,6 +299,39 @@ function replyToSender(sender, text) {
           console.log('Error: ', response.body.error);
       }
   });
+}
+
+function replyToSenderWithLanguages(sender, currentLang) {
+    messageData = {
+        "text" : `We've set your language to ${currentLang}, would you like to change it?`,
+        "quick_replies":[
+          {
+              "content_type": "text",
+              "title": "English",
+              "payload": "English"
+          },
+          {
+              "content_type": "text",
+              "title": "Francais",
+              "payload": "Francais"
+          }
+        ]
+    };
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token : token },
+        method: 'POST',
+        json: {
+          recipient: { id : sender },
+          message: messageData
+        }
+    }, function(error, response, body) {
+        if (error) {
+          console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+          console.log('Error: ', response.body.error);
+        }
+    });
 }
 
 function replyToSenderWithLocation(sender, text) {
