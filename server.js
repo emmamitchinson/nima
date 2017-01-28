@@ -192,7 +192,7 @@ function handleMenu(event, sender, req,res) {
         }else if (event['postback'] && event['postback']['payload']) {
             switch (event['postback']['payload'].toLowerCase()) {
                 case BOT_RESPONSES.SEARCH_OPTIONS_REPEAT.toLowerCase():
-                    saySearchOptions(sender,BOT_STATUS.MENU,res);
+                    saySearchOptionsAgain(sender,BOT_STATUS.MENU,res);
                     break;
             }
         } else {
@@ -234,7 +234,7 @@ function handleMenu(event, sender, req,res) {
                         saySearchOptions(sender,BOT_STATUS.MENU,res);
                         break;
                     case BOT_RESPONSES.SEARCH_OPTIONS_REPEAT:
-                        saySearchOptions(sender,BOT_STATUS.MENU,res);
+                        saySearchOptionsAgain(sender,BOT_STATUS.MENU,res);
                         break;
                     default:
                         sayError(sender, BOT_STATUS.MENU, res);
@@ -327,6 +327,13 @@ function saySearchOptions(sender, nextStatus, res) {
     console.log("******** SHOWING SEARCH OPTIONS");
     status = nextStatus;
     replyToSenderWithSearchOptions(sender, BOT_RESPONSES.SEARCH_OPTIONS);
+    res.sendStatus(200);
+}
+
+function saySearchOptionsAgain(sender, nextStatus, res) {
+    console.log("******** SHOWING SEARCH OPTIONS AGAIN");
+    status = nextStatus;
+    replyToSenderWithSearchOptions(sender, BOT_RESPONSES.SEARCH_OPTIONS_REPEAT);
     res.sendStatus(200);
 }
 
