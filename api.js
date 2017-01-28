@@ -22,8 +22,10 @@ module.exports.getLatLngFromPostcode = function (postcode, callback) {
     }, function (error, response, body) {
         if (error) {
             console.log('Error getting lat lng: ', error);
+            callback(0, 0);
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
+            callback(0, 0);
         }
         else {
             if (response.body['result'] != undefined)

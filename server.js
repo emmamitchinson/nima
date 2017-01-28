@@ -446,6 +446,25 @@ function showTyping(flag,sender) {
     });
 }
 
+function whiteListDomain(domain) {
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+        qs: { access_token : token },
+        method: 'POST',
+        json: {
+            "setting_type" : "domain_whitelisting",
+            "whitelisted_domains" : ["https://petersfancyapparel.com"],
+            "domain_action_type": "add"
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
+}
+
 function replyToSenderWithCarousel(sender, text, items) {
     messageData = {
         "attachment": {
