@@ -134,7 +134,7 @@ module.exports.getNHSFacility = function (type, lat, lng, callback) {
                     return count <= 4;
                      });
                 //whiteListDomain(domainArray);
-                whiteListDomain(["https://nimabotnhs.herokuapp.com"]);
+                whiteListDomain(["https://marioeguiluz.com"]);
                 callback(dataArray);
             }
             else
