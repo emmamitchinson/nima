@@ -99,7 +99,7 @@ app.post('/webhook/', function (req, res) {
 });
 
 function handleNeedLanguage(sender, res) {
-  // get language
+  // ask for langauge or default to english
   // set language
   try {
     console.log('Attempting to get language');
@@ -107,23 +107,7 @@ function handleNeedLanguage(sender, res) {
     replyToSender(sender, `We've set your langauge to ${currentLang}`);
     sayLocationNeeded(sender, BOT_STATUS.NEED_LOCATION, res);
     return;
-
-    // get below to handle the error
-
-    apis.getLanguage(sender, (res) => {
-      status = BOT_STATUS.NEED_LOCATION;
-      lang = res.languages[0]
-      replyToSender(sender, `We've set your langauge to ${lang}`);
-      res.sendStatus(200);
-    }, (e) => {
-      console.log(e);
-      status = BOT_STATUS.NEED_LOCATION;
-      lang = 'English';
-      replyToSender(sender, `We've set your langauge to ${lang}`);
-      res.sendStatus(200);
-    });
   } catch(e) {
-    console.log(e);
     status = BOT_STATUS.NEED_LOCATION;
     lang = 'English';
     replyToSender(sender, `We've set your langauge to ${lang}`);
@@ -227,6 +211,7 @@ function handleMenu(event, sender, req,res) {
 
 function sayLocationNeeded(sender, nextStatus, res) {
     console.log("******** GREETING MSG RECEIVED");
+    console.log(`The current lang is - ${currentLang}`)
     apis.getUserName(sender, function (firstName) {
         replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
         setTimeout(function () {
