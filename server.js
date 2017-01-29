@@ -53,8 +53,10 @@ var BOT_SEARCH_OPTIONS = {
 
 var BOT_LANGUAGE_OPTIONS = {
     ENGLISH_UK:'en_GB',
-    ENGLISH: 'english',
-    FRANCAIS: 'francais'
+    ENGLISH_US:'en_US',
+    ENGLISH: 'English',
+    FRANCAIS_FR:'fr_FR',
+    FRANCAIS: 'Francais'
 };
 
 var app_url_callback = "https://nimabotnhs.herokuapp.com/";
@@ -121,7 +123,7 @@ function determineResponse(status, sender, event, res, req) {
           introductoryGreet(sender, event, res, req);
           break;
       case BOT_STATUS.NEED_LANG:
-          sayNeedLanguage(sender, res);
+          sayNeedLanguage(sender, currentLang, res);
           break;
       case BOT_STATUS.LANG_PENDING:
           setLanguageFromQuickReplies(event, sender, res, req);
@@ -144,7 +146,7 @@ function determineResponse(status, sender, event, res, req) {
 function setLanguageFromQuickReplies(event, sender, res, req) {
     if (event.message && event.message.text) {
         text = event.message.text;
-        const options = ['English', 'Francais'];
+        const options = [BOT_LANGUAGE_OPTIONS.ENGLISH, BOT_LANGUAGE_OPTIONS.FRANCAIS];
         if (options.indexOf(text) != -1) {
             console.log(`Setting language ${text}`);
             currentLang = text;
@@ -264,16 +266,33 @@ function handleMenu(event, sender, req,res) {
 }
 
 /* General methods */
+function detectLanguage(language) {
+    switch (language){
+        case BOT_LANGUAGE_OPTIONS.ENGLISH_UK:
+            return BOT_LANGUAGE_OPTIONS.ENGLISH;
+            break;
+        case BOT_LANGUAGE_OPTIONS.ENGLISH_US:
+            return BOT_LANGUAGE_OPTIONS.ENGLISH;
+            break;
+        case BOT_LANGUAGE_OPTIONS.FRANCAIS_FR:
+            return BOT_LANGUAGE_OPTIONS.FRANCAIS;
+            break;
+        default:
+            return BOT_LANGUAGE_OPTIONS.ENGLISH;
+            break;
+    }
+}
 
 function introductoryGreet(sender, event, res, req) {
     console.log(sender);
     apis.getUserNameAndLang(sender, function (firstName,language) {
-        currentLang = language;
+        currentLang = detectLanguage(language);
         console.log(status, currentLang);
-        if (currentLang === undefined || currentLang === null) {
+        if (!askedLangNoLocation) {
           console.log(currentLang);
           status = BOT_STATUS.NEED_LANG;
-        } else {
+        }
+        else {
           status = BOT_STATUS.NEED_LOCATION;
         }
 
@@ -292,8 +311,7 @@ function sayLocationNeeded(sender, nextStatus, res) {
     }, 1000);
 }
 
-function sayNeedLanguage(sender, res) {
-    currentLang = 'English';
+function sayNeedLanguage(sender, currentLang, res) {
     try {
         askedLangNoLocation = true;
         console.log('Attempting to get language');
@@ -302,8 +320,6 @@ function sayNeedLanguage(sender, res) {
         }, 1000);
         status = BOT_STATUS.LANG_PENDING;
         res.sendStatus(200);
-
-        return;
     } catch(e) {
         status = BOT_STATUS.NEED_LOCATION;
         replyToSender(sender, BOT_RESPONSES.LANG_SET + ` ${currentLang}`);
@@ -397,16 +413,16 @@ function replyToSenderWithLanguages(sender, currentLang) {
     messageData = {
         "text" : BOT_RESPONSES.LANG_SET + ` ${currentLang}` + BOT_RESPONSES.LANG_CHANGE,
         "quick_replies":[
-          {
-              "content_type": "text",
-              "title": BOT_LANGUAGE_OPTIONS.ENGLISH,
-              "payload": BOT_LANGUAGE_OPTIONS.ENGLISH
-          },
-          {
-              "content_type": "text",
-              "title": BOT_LANGUAGE_OPTIONS.FRANCAIS,
-              "payload": BOT_LANGUAGE_OPTIONS.FRANCAIS
-          }
+            {
+                "content_type": "text",
+                "title": BOT_LANGUAGE_OPTIONS.ENGLISH,
+                "payload": BOT_LANGUAGE_OPTIONS.ENGLISH
+            },
+            {
+                "content_type": "text",
+                "title": BOT_LANGUAGE_OPTIONS.FRANCAIS,
+                "payload": BOT_LANGUAGE_OPTIONS.FRANCAIS
+            }
         ]
     };
     request({
