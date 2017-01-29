@@ -28,12 +28,6 @@ var BOT_RESPONSES  = {
     LANG_CHANGE : ', would you like to change it?'
 };
 
-var myLocalize = new Localize({
-    THANKS: {
-        "fr": "bla bla"
-    },
-});
-
 var BUTTON_STRINGS = {
     WEBSITE : "View Website",
     MAP: "Find us",
