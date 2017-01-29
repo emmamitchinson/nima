@@ -20,7 +20,9 @@ var BOT_RESPONSES  = {
     SEARCH_OPTIONS: "Thank you!!! Now I can find for you the nearest...",
     SEARCH_OPTIONS_REPEAT: "Lets find for you the nearest...",
     ERROR : 'Sorry, you explain yourself very bad...',
-    INVALID_POSTCODE : "Mmm, it doesn't look like a valid postcode, want to give another try."
+    INVALID_POSTCODE : "Mmm, it doesn't look like a valid postcode, want to give another try.",
+
+    LANG_SET : "We've set your language to"
 };
 
 var BUTTON_STRINGS = {
@@ -140,7 +142,7 @@ function setLanguageFromQuickReplies(event, sender, res, req) {
     }
 
     status = BOT_STATUS.NEED_LOCATION;
-    replyToSender(sender, `We've set your language to ${currentLang}`);
+    replyToSender(sender, BOT_RESPONSES.LANG_SET + ` ${currentLang}`);
     console.log("******** LANGUAGE CONFIRMATION MSG RECEIVED");
     determineResponse(status, sender, event, res, req);
 }
@@ -509,7 +511,6 @@ function replyToSenderWithCarousel(sender, items) {
             "url": item.website,
             "messenger_extensions": false,
             "webview_height_ratio": "tall"
-            //, "fallback_url": item.website
         };
         var urlButton = {
             "type": "web_url",
