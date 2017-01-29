@@ -230,7 +230,7 @@ function handleMenu(event, sender, req,res) {
                         sayReset(sender,res);
                         break;
 
-                    case text.indexOf(BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase()) > -1:
+                    case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
                         showTyping(true, sender);
                         apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(items){
                             replyToSenderWithCarousel(sender,items);
