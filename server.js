@@ -52,6 +52,7 @@ var BOT_SEARCH_OPTIONS = {
 };
 
 var BOT_LANGUAGE_OPTIONS = {
+    ENGLISH_UK:'en_GB',
     ENGLISH: 'english',
     FRANCAIS: 'francais'
 };
@@ -266,8 +267,9 @@ function handleMenu(event, sender, req,res) {
 
 function introductoryGreet(sender, event, res, req) {
     console.log(sender);
-    apis.getUserName(sender, function (firstName) {
-      console.log(status, currentLang);
+    apis.getUserNameAndLang(sender, function (firstName,language) {
+        currentLang = language;
+        console.log(status, currentLang);
         if (currentLang === undefined || currentLang === null) {
           console.log(currentLang);
           status = BOT_STATUS.NEED_LANG;

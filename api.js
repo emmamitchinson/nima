@@ -35,9 +35,9 @@ module.exports.getLatLngFromPostcode = function (postcode, callback) {
 };
 
 /* Get User name */
-module.exports.getUserName = function (sender, callback) {
+module.exports.getUserNameAndLang = function (sender, callback) {
     request({
-        url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,last_name',
+        url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,locale',
         qs: { access_token : server.token },
         method: 'GET',
         json: {}
@@ -48,7 +48,7 @@ module.exports.getUserName = function (sender, callback) {
             console.log('Error: ', response.body.error);
         }
         else {
-            callback(response.body['first_name']);
+            callback(response.body['first_name'],response.body['locale']);
         }
     });
 };
