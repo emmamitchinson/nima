@@ -18,13 +18,13 @@ var BOT_RESPONSES  = {
     INPUT_RESET : 'reset',
     GREETING  : 'Hi, ',
     GREETING_POST  : ' nice to see you here :)',
-    LOCATION     : 'So...tell me your postcode, or send me your location to help you out',
-    THANKS : "Thank you",
-    SEARCH_OPTIONS: "Thank you!!! Now I can find for you the nearest...",
-    SEARCH_OPTIONS_REPEAT: "Lets find for you the nearest...",
+    LOCATION     : 'Ready to go! :|]. Now tell me your postcode, or send me your location to help you out',
+    THANKS : "Thank you (Y)",
+    SEARCH_OPTIONS: "Thank you (Y). Now I can find for you the nearest...",
+    SEARCH_OPTIONS_REPEAT: "B| Deal! Let me find for you the nearest...",
     ERROR : 'That is so funny! :D',
-    INVALID_POSTCODE : "Mmm, it doesn't look like a valid postcode, want to give another try.",
-    LANG_SET : "We've set your language to",
+    INVALID_POSTCODE : "Mmm...o.O Tt doesn't look like a valid postcode, do you want to give another try?",
+    LANG_SET : "Done. Language set.", //"We've set your language to",
     LANG_CHANGE : ', would you like to change it?'
 };
 
@@ -153,7 +153,7 @@ function setLanguageFromQuickReplies(event, sender, res, req) {
     }
 
     status = BOT_STATUS.NEED_LOCATION;
-    replyToSender(sender, BOT_RESPONSES.LANG_SET + ` ${currentLang}`);
+    replyToSender(sender, BOT_RESPONSES.LANG_SET); // + ` ${currentLang}`);
     console.log("******** LANGUAGE CONFIRMATION MSG RECEIVED");
     determineResponse(status, sender, event, res, req);
 }
