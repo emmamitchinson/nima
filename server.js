@@ -149,16 +149,16 @@ function determineHumanResponseType(text) {
 
 function determineBotResponse(status, responseType, res) {
     switch (responseType) {
-        case "RESET"
+        case "RESET":
             sayReset(sender,res);
             break;
-        case "GREETING"
+        case "GREETING":
             introductoryGreet(sender, event, res, req);
             break;
-        case "THANKS"
+        case "THANKS":
             replyToSender(sender, "You're welcome! :)");
             break;
-        case "RUDE"
+        case "RUDE":
             replyToSender(sender, "That's not very nice :(");
             break;
         default:
@@ -213,7 +213,7 @@ function handleNeedLocation(event, sender, req, res) {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
                 var responseType = determineHumanResponseType(text);
-                if (responseType){
+                if (responseType) {
                     return determineBotResponse(status, responseType, res);
                 }
                 //api to get lat lng from postcode
@@ -228,7 +228,6 @@ function handleNeedLocation(event, sender, req, res) {
                         res.sendStatus(200);
                     }
                 });
-                }
             } else {
                 sayError(sender, BOT_STATUS.NEED_LOCATION, res);
             }
