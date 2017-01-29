@@ -29,6 +29,8 @@ var BOT_RESPONSES  = {
     LANG_CHANGE : ', would you like to change it?'
 };
 
+var USER_LANG_STATE = [];
+
 var BUTTON_STRINGS = {
     WEBSITE : "View Website",
     MAP: "Find us",
@@ -63,17 +65,20 @@ var BOT_LANGUAGE_OPTIONS = {
     ENGLISH_US:'en_US',
     ENGLISH: 'English',
     FRANCAIS_FR:'fr_FR',
-    FRANCAIS: 'Francais'
+    FRANCAIS: 'Francais',
+    SPANISH: 'es_ES'
 };
 
 var LANGUAGE_CODES = {
   ENGLISH: 'en_GB',
-  FRANCAIS: 'fr_FR'
+  FRANCAIS: 'fr_FR',
+  SPANISH: 'es_ES'
 }
 
 var LANGUAGE_PLAIN = {
   'en_GB': 'ENGLISH',
-  'fr_FR': 'FRANCAIS'
+  'fr_FR': 'FRANCAIS',
+  'es_ES': 'SPANISH'
 }
 
 var app_url_callback = "https://nimabotnhs.herokuapp.com/";
@@ -312,6 +317,9 @@ function detectLanguage(language) {
         case BOT_LANGUAGE_OPTIONS.FRANCAIS_FR:
             return LANGUAGE_CODES.FRANCAIS;
             break;
+            case BOT_LANGUAGE_OPTIONS.SPANISH_ES:
+                return LANGUAGE_CODES.SPANISH;
+                break;
         default:
             return LANGUAGE_CODES.ENGLISH;
             break;
@@ -459,6 +467,11 @@ function replyToSenderWithLanguages(sender, currentLang) {
                 "content_type": "text",
                 "title": BOT_LANGUAGE_OPTIONS.FRANCAIS,
                 "payload": BOT_LANGUAGE_OPTIONS.FRANCAIS
+            },
+            {
+                "content_type": "text",
+                "title": BOT_LANGUAGE_OPTIONS.SPANISH,
+                "payload": BOT_LANGUAGE_OPTIONS.SPANISH
             }
         ]
     };
