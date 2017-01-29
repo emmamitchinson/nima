@@ -66,19 +66,19 @@ var BOT_LANGUAGE_OPTIONS = {
     ENGLISH: 'English',
     FRANCAIS_FR:'fr_FR',
     FRANCAIS: 'Francais',
-    SPANISH: 'es_ES'
+    ESPAÑOL: 'es_LA'
 };
 
 var LANGUAGE_CODES = {
   ENGLISH: 'en_GB',
   FRANCAIS: 'fr_FR',
-  SPANISH: 'es_ES'
+  ESPAÑOL: 'es_LA'
 }
 
 var LANGUAGE_PLAIN = {
   'en_GB': 'ENGLISH',
   'fr_FR': 'FRANCAIS',
-  'es_ES': 'SPANISH'
+  'es_LA': 'ESPAÑOL'
 }
 
 var app_url_callback = "https://nimabotnhs.herokuapp.com/";
@@ -318,7 +318,7 @@ function detectLanguage(language) {
             return LANGUAGE_CODES.FRANCAIS;
             break;
             case BOT_LANGUAGE_OPTIONS.SPANISH_ES:
-                return LANGUAGE_CODES.SPANISH;
+                return LANGUAGE_CODES.ESPAÑOL;
                 break;
         default:
             return LANGUAGE_CODES.ENGLISH;
