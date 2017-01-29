@@ -23,6 +23,7 @@ module.exports = {
         INPUT_GREET2 : 'bonjour',
         INPUT_GREET3 : 'tiens',
         RESET: "Recommençons...",
+				INPUT_RESET : 'reset',
         GREETING: "Salut, ",
         GREETING_POST: "Ravi de vous voir :)",
         LOCATION: "Bien, m'envoye votre adresse ou votre code postal pour obtenir des informations sur votre zone",
