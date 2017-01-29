@@ -224,11 +224,11 @@ function handleMenu(event, sender, req,res) {
                 */
                 text = event.message.text.toLowerCase();
 
-                if (text.indexOf(BOT_SEARCH_OPTIONS_MATCH.HOSPITALS.toLowerCase())) {
+                if (text.indexOf(BOT_SEARCH_OPTIONS_MATCH.HOSPITALS.toLowerCase()) > -1) {
                     text = BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase();
-                } else if (text.indexOf(BOT_SEARCH_OPTIONS_MATCH.PHARMACIES.toLowerCase())) {
+                } else if (text.indexOf(BOT_SEARCH_OPTIONS_MATCH.PHARMACIES.toLowerCase()) > -1) {
                     text = BOT_SEARCH_OPTIONS.PHARMACIES.toLowerCase();
-                } else if (text.indexOf(BOT_SEARCH_OPTIONS_MATCH.GPS.toLowerCase())) {
+                } else if (text.indexOf(BOT_SEARCH_OPTIONS_MATCH.GPS.toLowerCase()) > -1 ) {
                     text = BOT_SEARCH_OPTIONS.GPS.toLowerCase();
                 }
 
