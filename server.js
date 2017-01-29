@@ -12,17 +12,21 @@ app.use(bodyParser.urlencoded({
 /* General conversation */
 var BOT_RESPONSES  = {
     INTRODUCTION : "Hi, i'm NIMA. I'm your smart friend. Try asking me about NHS facilities near you.",
+    INPUT_GREET1 : 'hi',
+    INPUT_GREET2 : 'hello',
+    INPUT_GREET3 : 'hey',
     RESET : 'Lets do a fresh start...',
+    INPUT_RESET : 'reset',
     GREETING  : 'Hi, ',
     GREETING_POST  : ' nice to see you here :)',
     LOCATION     : 'So...tell me your postcode, or send me your location to help you out',
     THANKS : "Thank you",
     SEARCH_OPTIONS: "Thank you!!! Now I can find for you the nearest...",
     SEARCH_OPTIONS_REPEAT: "Lets find for you the nearest...",
-    ERROR : 'Sorry, you explain yourself very bad...',
+    ERROR : 'That is so funny! :D',
     INVALID_POSTCODE : "Mmm, it doesn't look like a valid postcode, want to give another try.",
-
-    LANG_SET : "We've set your language to"
+    LANG_SET : "We've set your language to",
+    LANG_CHANGE : ', would you like to change it?'
 };
 
 var BUTTON_STRINGS = {
@@ -45,6 +49,11 @@ var BOT_SEARCH_OPTIONS = {
     HOSPITALS: 'Hospitals',
     PHARMACIES: 'Pharmacy',
     GPS: 'GP'
+};
+
+var BOT_LANGUAGE_OPTIONS = {
+    ENGLISH: 'english',
+    FRANCAIS: 'francais'
 };
 
 var app_url_callback = "https://nimabotnhs.herokuapp.com/";
@@ -158,7 +167,7 @@ function handleNeedLocation(event, sender, req, res) {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
-                    case "reset":
+                    case BOT_RESPONSES.INPUT_RESET:
                       sayReset(sender, res);
                       break;
                     default:
@@ -202,7 +211,7 @@ function handleMenu(event, sender, req,res) {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
                 switch (text) {
-                    case "reset":
+                    case BOT_RESPONSES.INPUT_RESET:
                         sayReset(sender,res);
                         break;
 
@@ -231,9 +240,9 @@ function handleMenu(event, sender, req,res) {
                         });
                         break;
 
-                    case "hi":
-                    case "hello":
-                    case "hey":
+                    case BOT_RESPONSES.INPUT_GREET1:
+                    case BOT_RESPONSES.INPUT_GREET2:
+                    case BOT_RESPONSES.INPUT_GREET3:
                         saySearchOptions(sender,BOT_STATUS.MENU,res);
                         break;
                     case BOT_RESPONSES.SEARCH_OPTIONS_REPEAT:
@@ -295,7 +304,7 @@ function sayNeedLanguage(sender, res) {
         return;
     } catch(e) {
         status = BOT_STATUS.NEED_LOCATION;
-        replyToSender(sender, `We've set your language to ${currentLang}`);
+        replyToSender(sender, BOT_RESPONSES.LANG_SET + ` ${currentLang}`);
         console.log("******** LANGUAGE CONFIRMATION MSG RECEIVED");
         res.sendStatus(200);
     }
@@ -310,7 +319,7 @@ function sayThanks(sender, nextStatus, res) {
 
 function sayError(sender, nextStatus, res) {
     console.log("******** NO MATCH");
-    replyToSender(sender, "That is sooo funny! :D");
+    replyToSender(sender, BOT_RESPONSES.ERROR);
     status = nextStatus;
     res.sendStatus(200);
 }
@@ -384,17 +393,17 @@ function replyToSender(sender, text) {
 
 function replyToSenderWithLanguages(sender, currentLang) {
     messageData = {
-        "text" : `We've set your language to ${currentLang}, would you like to change it?`,
+        "text" : BOT_RESPONSES.LANG_SET + ` ${currentLang}` + BOT_RESPONSES.LANG_CHANGE,
         "quick_replies":[
           {
               "content_type": "text",
-              "title": "English",
-              "payload": "English"
+              "title": BOT_LANGUAGE_OPTIONS.ENGLISH,
+              "payload": BOT_LANGUAGE_OPTIONS.ENGLISH
           },
           {
               "content_type": "text",
-              "title": "Francais",
-              "payload": "Francais"
+              "title": BOT_LANGUAGE_OPTIONS.FRANCAIS,
+              "payload": BOT_LANGUAGE_OPTIONS.FRANCAIS
           }
         ]
     };
