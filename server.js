@@ -233,6 +233,8 @@ function handleMenu(event, sender, req,res) {
                     text = BOT_SEARCH_OPTIONS.GPS.toLowerCase();
                 }
 
+                console.log(text);
+
                 switch (text) {
                     case BOT_RESPONSES.INPUT_RESET:
                         sayReset(sender,res);
