@@ -216,6 +216,7 @@ function handleMenu(event, sender, req,res) {
                 eg hello or hola or boujour wold convert to user_input_hello
                 */
                 text = event.message.text.toLowerCase();
+                console.log("CONTAINS? ," + text.indexOf(BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase()));
                 switch (text) {
                     case BOT_RESPONSES.INPUT_RESET:
                         sayReset(sender,res);
