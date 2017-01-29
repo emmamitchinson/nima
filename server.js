@@ -61,8 +61,8 @@ var app_url_callback = "https://nimabotnhs.herokuapp.com/";
 /* GET - GENERAL PROPERTIES */
 
 var port = process.env.PORT || 8080;
-var token = "EAAESs7ymteEBAHQrZC3y2RQrXswMilWUGjPZBNyIuMVndVgBktVMSbRzEEkWPdnQXvRXdOCPxNDDfRzQ2lo9yXUyYx2y4jFPX3wDSw8yZBSNUX7MtTKB207imhW29ofQUSuFZAacf0ok417RHQZB40JZAkf1lAMO0FvAbdck1XrwZDZD";
-var secret = "nimaInHackathon";
+var token = "EAAIs8hZBABeoBAH8jpZAa37N2yvzwcV1VjCWy1GtQDAEsBvSGTMaQ6hwZC4EZCQ2AZA6jSVSXoGXsli8CSRmqAtCnavmb6UMfcsTFdEwIjAzo195YuBiTJBTGrmXhZBOyxkVEwzJb1mrmTjffCSZAbw7TW6gv0WlbVHjsRQTRSxcAZDZD";
+var secret = "catcatcat";
 var status = BOT_STATUS.NEED_GREET;
 var lat = 0;
 var lng = 0;
@@ -203,35 +203,35 @@ function setLanguageFromQuickReplies(event, sender, res, req) {
 }
 
 function handleNeedLocation(event, sender, req, res) {
-        //Attachments LAT - LONG
-        if (event.message.attachments != undefined && event.message.attachments.length > 0 && event.message.attachments[0]['type'] == ['location'] && event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
-            lat = event.message.attachments[0].payload.coordinates.lat;
-            lng = event.message.attachments[0].payload.coordinates.long;
-            console.log("******** ATTACHMENT MSG RECEIVED");
-            saySearchOptions(sender,BOT_STATUS.MENU,res);
-        } else {
-            if (event.message && event.message.text) {
-                text = event.message.text.toLowerCase();
-                var responseType = determineHumanResponseType(text);
-                if (responseType) {
-                    return determineBotResponse(status, responseType, res);
-                }
-                //api to get lat lng from postcode
-                apis.getLatLngFromPostcode(text, function (latitude,longitude) {
-                    if (latitude != 0 && longitude != 0) {
-                        lat = latitude;
-                        lng = longitude;
-                        saySearchOptions(sender, BOT_STATUS.MENU, res);
-                    }
-                    else {
-                        replyToSender(sender,BOT_RESPONSES.INVALID_POSTCODE);
-                        res.sendStatus(200);
-                    }
-                });
-            } else {
-                sayError(sender, BOT_STATUS.NEED_LOCATION, res);
+    //Attachments LAT - LONG
+    if (event.message.attachments != undefined && event.message.attachments.length > 0 && event.message.attachments[0]['type'] == ['location'] && event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
+        lat = event.message.attachments[0].payload.coordinates.lat;
+        lng = event.message.attachments[0].payload.coordinates.long;
+        console.log("******** ATTACHMENT MSG RECEIVED");
+        saySearchOptions(sender,BOT_STATUS.MENU,res);
+    } else {
+        if (event.message && event.message.text) {
+            text = event.message.text.toLowerCase();
+            var responseType = determineHumanResponseType(text);
+            if (responseType) {
+                return determineBotResponse(status, responseType, res);
             }
+            //api to get lat lng from postcode
+            apis.getLatLngFromPostcode(text, function (latitude,longitude) {
+                if (latitude != 0 && longitude != 0) {
+                    lat = latitude;
+                    lng = longitude;
+                    saySearchOptions(sender, BOT_STATUS.MENU, res);
+                }
+                else {
+                    replyToSender(sender,BOT_RESPONSES.INVALID_POSTCODE);
+                    res.sendStatus(200);
+                }
+            });
+        } else {
+            sayError(sender, BOT_STATUS.NEED_LOCATION, res);
         }
+    }
 }
 
 function handleMenu(event, sender, req,res) {
@@ -244,7 +244,7 @@ function handleMenu(event, sender, req,res) {
             lat = event.message.attachments[0].payload.coordinates.lat;
             lng = event.message.attachments[0].payload.coordinates.long;
             saySearchOptions(sender,BOT_STATUS.MENU,res);
-        }else if (event['postback'] && event['postback']['payload']) {
+        } else if (event['postback'] && event['postback']['payload']) {
             switch (event['postback']['payload'].toLowerCase()) {
                 case BOT_RESPONSES.SEARCH_OPTIONS_REPEAT.toLowerCase():
                     saySearchOptionsAgain(sender,BOT_STATUS.MENU,res);
@@ -332,7 +332,6 @@ function introductoryGreet(sender, event, res, req) {
 
         replyToSender(sender, BOT_RESPONSES.GREETING + firstName + BOT_RESPONSES.GREETING_POST);
         determineResponse(status, sender, event, res, req);
-        //res.sendStatus(200);
     });
     console.log("******** GREETING MSG RECEIVED");
 }
@@ -423,24 +422,24 @@ function showGreetingsMessage(message) {
 }
 
 function replyToSender(sender, text) {
-  messageData = {
-    text : text
-  };
-  request({
-      url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: { access_token : token },
-      method: 'POST',
-      json: {
-          recipient: { id : sender },
-          message: messageData
-      }
-  }, function(error, response, body) {
-      if (error) {
-          console.log('Error sending message: ', error);
-      } else if (response.body.error) {
-          console.log('Error: ', response.body.error);
-      }
-  });
+    messageData = {
+        text : text
+    };
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token : token },
+        method: 'POST',
+        json: {
+            recipient: { id : sender },
+            message: messageData
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
 }
 
 function replyToSenderWithLanguages(sender, currentLang) {
