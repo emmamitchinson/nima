@@ -445,7 +445,7 @@ function replyToSender(sender, text) {
 
 function replyToSenderWithLanguages(sender, currentLang) {
     messageData = {
-        "text" : BOT_RESPONSES.LANG_SET + ` ${currentLang}` + BOT_RESPONSES.LANG_CHANGE,
+        "text" : BOT_RESPONSES.LANG_SET + ` ${LANGUAGE_PLAIN[currentLang]}` + BOT_RESPONSES.LANG_CHANGE,
         "quick_replies":[
             {
                 "content_type": "text",
