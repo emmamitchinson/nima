@@ -1,6 +1,6 @@
 {
     "appSecret": "aeffbb04be4d8c1b7b5cf56a7ef58f4f",
     "pageAccessToken": "EAAIs8hZBABeoBAIhX67TvBC5KUfCFXndwttr2CiW4TfBPcSZCGn6uQJsZBZAaaNUZCZCK958XrRLl1f42VINxiZBtZArMICBhBcOLZABVpjjhuPZCBZBwRq2jmG4zRHZCMlGUb1nD2miBvLof6AySTcua5HbNuPYtKj3yZAmiUshbEc1ZCagZDZD",
-    "validationToken": "8b9a5860187d9e92cbe6c690986334b7",
-    "serverURL": ""
+    "validationToken": "catcatcat",
+    "serverURL": "https://catsrcool.herokuapp.com/webhook"
 }
