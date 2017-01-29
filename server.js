@@ -2,12 +2,12 @@ var app = require('express')();
 var bodyParser  = require('body-parser');
 var request = require('request');
 var apis = require('./api');
+var Localize = require('localize');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-
 
 /* General conversation */
 var BOT_RESPONSES  = {
@@ -28,6 +28,12 @@ var BOT_RESPONSES  = {
     LANG_SET : "We've set your language to",
     LANG_CHANGE : ', would you like to change it?'
 };
+
+var myLocalize = new Localize({
+    THANKS: {
+        "fr": "bla bla"
+    },
+});
 
 var BUTTON_STRINGS = {
     WEBSITE : "View Website",
@@ -156,6 +162,7 @@ function setLanguageFromQuickReplies(event, sender, res, req) {
     status = BOT_STATUS.NEED_LOCATION;
     replyToSender(sender, BOT_RESPONSES.LANG_SET + ` ${currentLang}`);
     console.log("******** LANGUAGE CONFIRMATION MSG RECEIVED");
+    myLocalize.setLocale("fr");
     determineResponse(status, sender, event, res, req);
 }
 
