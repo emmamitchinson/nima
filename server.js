@@ -29,6 +29,8 @@ var BOT_RESPONSES  = {
     LANG_CHANGE : ', would you like to change it?'
 };
 
+var USER_LANG_STATE = [];
+
 var BUTTON_STRINGS = {
     WEBSITE : "View Website",
     MAP: "Find us",
@@ -64,19 +66,19 @@ var BOT_LANGUAGE_OPTIONS = {
     ENGLISH: 'English',
     FRANCAIS_FR:'fr_FR',
     FRANCAIS: 'Francais',
-    ESPAÑOL_LA: 'Español'
+    SPANISH: 'es_ES'
 };
 
 var LANGUAGE_CODES = {
   ENGLISH: 'en_GB',
   FRANCAIS: 'fr_FR',
-  ESPAÑOL: 'es_LA'
+  SPANISH: 'es_ES'
 }
 
 var LANGUAGE_PLAIN = {
   'en_GB': 'ENGLISH',
   'fr_FR': 'FRANCAIS',
-  'es_LA': 'ESPAÑOL'
+  'es_ES': 'SPANISH'
 }
 
 var app_url_callback = "https://nimabotnhs.herokuapp.com/";
@@ -167,7 +169,7 @@ function determineResponse(status, sender, event, res, req) {
 function setLanguageFromQuickReplies(event, sender, res, req) {
     if (event.message && event.message.text) {
         text = event.message.text;
-        const options = [BOT_LANGUAGE_OPTIONS.ENGLISH, BOT_LANGUAGE_OPTIONS.FRANCAIS, BOT_LANGUAGE_OPTIONS.ESPAÑOL];
+        const options = [BOT_LANGUAGE_OPTIONS.ENGLISH, BOT_LANGUAGE_OPTIONS.FRANCAIS];
         if (options.indexOf(text) != -1) {
             console.log(`Setting language ${text}`);
             currentLang = LANGUAGE_CODES[text.toUpperCase()];
@@ -315,9 +317,9 @@ function detectLanguage(language) {
         case BOT_LANGUAGE_OPTIONS.FRANCAIS_FR:
             return LANGUAGE_CODES.FRANCAIS;
             break;
-        case BOT_LANGUAGE_OPTIONS.ESPAÑOL_LA:
-            return LANGUAGE_CODES.ESPAÑOL;
-            break;
+            case BOT_LANGUAGE_OPTIONS.SPANISH_ES:
+                return LANGUAGE_CODES.SPANISH;
+                break;
         default:
             return LANGUAGE_CODES.ENGLISH;
             break;
@@ -468,8 +470,8 @@ function replyToSenderWithLanguages(sender, currentLang) {
             },
             {
                 "content_type": "text",
-                "title": BOT_LANGUAGE_OPTIONS.ESPAÑOL,
-                "payload": BOT_LANGUAGE_OPTIONS.ESPAÑOL
+                "title": BOT_LANGUAGE_OPTIONS.SPANISH,
+                "payload": BOT_LANGUAGE_OPTIONS.SPANISH
             }
         ]
     };
