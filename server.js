@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({
 
 /* General conversation */
 var BOT_RESPONSES  = {
-    INTRODUCTION : "Hi, I'm NIMA. I'm your smart friend. Try asking me about NHS facilities near you.",
+    INTRODUCTION : "Hi, i'm NIMA. I'm your smart friend. Try asking me about NHS facilities near you.",
     RESET : 'Lets do a fresh start...',
     GREETING  : 'Hi, ',
     GREETING_POST  : ' nice to see you here :)',
@@ -64,7 +64,7 @@ exports.token = token;
 /* GENERAL methods */
 app.listen(port, function () {
     console.log('The webhook is running on port ' + port);
-    showGreetingsMessage();
+    showGreetingsMessage(BOT_RESPONSES.INTRODUCTION);
 });
 
 /* GET - GENERAL WEBHOOK */
@@ -339,7 +339,7 @@ function saySearchOptionsAgain(sender, nextStatus, res) {
 }
 
 /* SEND - Text */
-function showGreetingsMessage() {
+function showGreetingsMessage(message) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/thread_settings',
         qs: { access_token : token },
@@ -347,7 +347,7 @@ function showGreetingsMessage() {
         json: {
             "setting_type":"greeting",
             "greeting":{
-                "text":"HIIIII"
+                "text": message
             }
         }
     }, function(error, response, body) {
