@@ -24,7 +24,7 @@ var BOT_RESPONSES  = {
     SEARCH_OPTIONS_REPEAT: "B| Deal! Let me find for you the nearest...",
     ERROR : 'That is so funny! :D',
     INVALID_POSTCODE : "Mmm...o.O Tt doesn't look like a valid postcode, do you want to give another try?",
-    LANG_SET : "Done. Language set.", //"We've set your language to",
+    LANG_SET : "We've set your language to",
     LANG_CHANGE : ', would you like to change it?'
 };
 
@@ -153,7 +153,7 @@ function setLanguageFromQuickReplies(event, sender, res, req) {
     }
 
     status = BOT_STATUS.NEED_LOCATION;
-    replyToSender(sender, BOT_RESPONSES.LANG_SET); // + ` ${currentLang}`);
+    replyToSender(sender, BOT_RESPONSES.LANG_SET + ` ${currentLang}`);
     console.log("******** LANGUAGE CONFIRMATION MSG RECEIVED");
     determineResponse(status, sender, event, res, req);
 }
