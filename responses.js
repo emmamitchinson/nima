@@ -61,7 +61,7 @@ module.exports = {
 		LANG_SET: "Ok, hablemos en",
 		LANG_CHANGE: ', te gustaria cambiarlo?',
 		WEBSITE : "Ver Web",
-		MAP: "Find us",
+		MAP: "Localizacion",
 		SEARCH_AGAIN: "Cambiar la busqueda",
 		NOPHONE: "Sin info de contacto"
 	}
