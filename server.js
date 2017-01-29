@@ -44,6 +44,13 @@ var BOT_STATUS = {
     MENU : 5
 };
 
+
+var BOT_SEARCH_OPTIONS_MATCH = {
+    HOSPITALS: 'hospital',
+    PHARMACIES: 'Pharmac',
+    GPS: 'GP'
+};
+
 var BOT_SEARCH_OPTIONS = {
     HOSPITALS: 'Hospitals',
     PHARMACIES: 'Pharmacy',
@@ -218,11 +225,11 @@ function handleMenu(event, sender, req,res) {
                 */
                 text = event.message.text.toLowerCase();
 
-                if (text.indexOf(BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase())) {
+                if (text.indexOf(BOT_SEARCH_OPTIONS_MATCH.HOSPITALS.toLowerCase())) {
                     text = BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase();
-                } else if (text.indexOf(BOT_SEARCH_OPTIONS.PHARMACIES.toLowerCase())) {
+                } else if (text.indexOf(BOT_SEARCH_OPTIONS_MATCH.PHARMACIES.toLowerCase())) {
                     text = BOT_SEARCH_OPTIONS.PHARMACIES.toLowerCase();
-                } else if (text.indexOf(BOT_SEARCH_OPTIONS.GPS.toLowerCase())) {
+                } else if (text.indexOf(BOT_SEARCH_OPTIONS_MATCH.GPS.toLowerCase())) {
                     text = BOT_SEARCH_OPTIONS.GPS.toLowerCase();
                 }
 
@@ -231,7 +238,7 @@ function handleMenu(event, sender, req,res) {
                         sayReset(sender,res);
                         break;
 
-                    case text.indexOf(BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase()) > -1:
+                    case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
                         showTyping(true, sender);
                         apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(items){
                             replyToSenderWithCarousel(sender,items);
