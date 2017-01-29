@@ -66,7 +66,8 @@ var BOT_LANGUAGE_OPTIONS = {
     ENGLISH: 'English',
     FRANCAIS_FR:'fr_FR',
     FRANCAIS: 'Francais',
-    ESPAÑOL: 'es_LA'
+    ESPAÑOL_LA: 'es_LA',
+    ESPAÑOL: 'Español'
 };
 
 var LANGUAGE_CODES = {
@@ -169,7 +170,7 @@ function determineResponse(status, sender, event, res, req) {
 function setLanguageFromQuickReplies(event, sender, res, req) {
     if (event.message && event.message.text) {
         text = event.message.text;
-        const options = [BOT_LANGUAGE_OPTIONS.ENGLISH, BOT_LANGUAGE_OPTIONS.FRANCAIS];
+        const options = [BOT_LANGUAGE_OPTIONS.ENGLISH, BOT_LANGUAGE_OPTIONS.FRANCAIS, BOT_LANGUAGE_OPTIONS.ESPAÑOL];
         if (options.indexOf(text) != -1) {
             console.log(`Setting language ${text}`);
             currentLang = LANGUAGE_CODES[text.toUpperCase()];
@@ -317,9 +318,9 @@ function detectLanguage(language) {
         case BOT_LANGUAGE_OPTIONS.FRANCAIS_FR:
             return LANGUAGE_CODES.FRANCAIS;
             break;
-            case BOT_LANGUAGE_OPTIONS.SPANISH_ES:
-                return LANGUAGE_CODES.ESPAÑOL;
-                break;
+        case BOT_LANGUAGE_OPTIONS.ESPAÑOL_LA:
+            return LANGUAGE_CODES.ESPAÑOL;
+            break;
         default:
             return LANGUAGE_CODES.ENGLISH;
             break;
@@ -470,8 +471,8 @@ function replyToSenderWithLanguages(sender, currentLang) {
             },
             {
                 "content_type": "text",
-                "title": BOT_LANGUAGE_OPTIONS.SPANISH,
-                "payload": BOT_LANGUAGE_OPTIONS.SPANISH
+                "title": BOT_LANGUAGE_OPTIONS.ESPAÑOL,
+                "payload": BOT_LANGUAGE_OPTIONS.ESPAÑOL
             }
         ]
     };
