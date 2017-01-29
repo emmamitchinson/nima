@@ -15,7 +15,11 @@ module.exports = {
 	    ERROR: 'That is so funny! :D',
 	    INVALID_POSTCODE: "Mmm... It doesn't look like a valid postcode, do you want to give another try?",
 	    LANG_SET: "I've set your language to",
-	    LANG_CHANGE: ', would you like to change it?'
+	    LANG_CHANGE: ', would you like to change it?',
+		WEBSITE : "View Website",
+		MAP: "Find us",
+		SEARCH_AGAIN: "Search Again",
+		NOPHONE: "No phone info"
 	},
 	fr_FR: {
 		INTRODUCTION : "Salut, je m'appelle NIMA. Je suis votre ami habile. Je peux trouver les aménagement de NHS près de vous. Ce n'est que le début",
@@ -32,8 +36,12 @@ module.exports = {
 		SEARCH_OPTIONS_REPEAT: "Bien sûr :D! Laissez moi trouver le plus proche...",
 		ERROR: "Desolée, pouvez-vous cela d'une manière différente?",
 		INVALID_POSTCODE: "Il semble que c'est une code postal invalide, voulez-vous essayer à nouveau?",
-		LANG_SET: "J'ai règlé votre langue à",
-		LANG_CHANGE: ', voulez-vous le modifier?'
+	    LANG_SET: "J'ai règlé votre langue à",
+	    LANG_CHANGE: ', voulez-vous le modifier?',
+		WEBSITE : "View Website",
+		MAP: "Find us",
+		SEARCH_AGAIN: "Search Again",
+		NOPHONE: "No phone info"
 	},
 	es_LA: {
 		INTRODUCTION : "Hola, me llamo NIMA. Soy tu amigo inteligente. Te puedo ayudar a encontrar entidades de NHS. Y esto es solo el principio.",
@@ -51,6 +59,10 @@ module.exports = {
 		ERROR: 'Jajaja eso ha sido muy gracioso :D',
 		INVALID_POSTCODE: "Mmm... No parece un codigo postal correcto...Lo intentamos de nuevo?",
 		LANG_SET: "Ok, hablemos en",
-		LANG_CHANGE: ', te gustaria cambiarlo?'
+		LANG_CHANGE: ', te gustaria cambiarlo?',
+		WEBSITE : "Ver Web",
+		MAP: "Find us",
+		SEARCH_AGAIN: "Cambiar la busqueda",
+		NOPHONE: "Sin info de contacto"
 	}
 }

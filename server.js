@@ -26,7 +26,11 @@ var BOT_RESPONSES  = {
     ERROR : 'That is so funny! :D',
     INVALID_POSTCODE : "Mmm... It doesn't look like a valid postcode, do you want to give another try?",
     LANG_SET : "We've set your language to",
-    LANG_CHANGE : ', would you like to change it?'
+    LANG_CHANGE : ', would you like to change it?',
+    WEBSITE : "View Website",
+    MAP: "Find us",
+    SEARCH_AGAIN: "Search Again",
+    NOPHONE: "No phone info"
 };
 
 var USER_LANG_STATE = [];
@@ -593,20 +597,20 @@ function replyToSenderWithCarousel(sender, items) {
         var urlButton = {
             "type": "web_url",
             "url": item.website,
-            "title": BUTTON_STRINGS.WEBSITE
+            "title": BOT_RESPONSES.WEBSITE
         };
         var mapButton = {
             "type": "web_url",
             "url": "https://maps.google.com/?q="+item.latitude+","+item.longitude,
-            "title": BUTTON_STRINGS.MAP
+            "title": BOT_RESPONSES.MAP
         };
         var searchAgainButton = {
             "type": "postback",
-            "title": BUTTON_STRINGS.SEARCH_AGAIN,
+            "title": BOT_RESPONSES.SEARCH_AGAIN,
             "payload": BOT_RESPONSES.SEARCH_OPTIONS_REPEAT
         };
         var buttons = [urlButton, mapButton, searchAgainButton];
-        var dict = { "title" : item.name, "subtitle" : item.phone ? item.phone : BUTTON_STRINGS.NOPHONE , "default_action" : urlAction , "buttons" : buttons };
+        var dict = { "title" : item.name, "subtitle" : item.phone ? item.phone : BOT_RESPONSES.NOPHONE , "default_action" : urlAction , "buttons" : buttons };
         elements.push(dict);
         console.log(item);
     });
