@@ -18,12 +18,12 @@ var BOT_RESPONSES  = {
     INPUT_RESET : 'reset',
     GREETING  : 'Hi, ',
     GREETING_POST  : ' nice to see you here :)',
-    LOCATION     : 'Ready to go! :|]. Now tell me your postcode, or send me your location to help you out',
+    LOCATION     : 'Ready to go!. Now tell me your postcode, or send me your location to help you out',
     THANKS : "Thank you (Y)",
     SEARCH_OPTIONS: "Thank you (Y). Now I can find for you the nearest...",
-    SEARCH_OPTIONS_REPEAT: "B| Deal! Let me find for you the nearest...",
+    SEARCH_OPTIONS_REPEAT: "Done! Let me find for you the nearest...",
     ERROR : 'That is so funny! :D',
-    INVALID_POSTCODE : "Mmm...o.O Tt doesn't look like a valid postcode, do you want to give another try?",
+    INVALID_POSTCODE : "Mmm... It doesn't look like a valid postcode, do you want to give another try?",
     LANG_SET : "We've set your language to",
     LANG_CHANGE : ', would you like to change it?'
 };
