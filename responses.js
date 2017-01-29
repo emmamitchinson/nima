@@ -1,11 +1,7 @@
 module.exports = {
 	en_GB: {
 		INTRODUCTION : "Hi, I'm NIMA. I'm your smart friend. I can find NHS facilities near you. And this is only the beginning.",
-	    INPUT_GREET1 : 'hi',
-	    INPUT_GREET2 : 'hello',
-	    INPUT_GREET3 : 'hey',
 	    RESET : 'Lets do a fresh start...',
-	    INPUT_RESET : 'reset',
 	    GREETING: 'Hi, ',
 	    GREETING_POST: ' nice to see you here :)',
 	    LOCATION: 'Ready to go! Now send me your location or write me your postcode to help you out.',
@@ -23,9 +19,6 @@ module.exports = {
 	},
 	fr_FR: {
 		INTRODUCTION : "Salut, je m'appelle NIMA. Je suis votre ami habile. Je peux trouver les aménagement de NHS près de vous. Ce n'est que le début",
-		INPUT_GREET1 : 'salut',
-		INPUT_GREET2 : 'bonjour',
-		INPUT_GREET3 : 'tiens',
 		RESET: "Recommençons...",
 		INPUT_RESET : 'reset',
 		GREETING: "Salut, ",
@@ -38,18 +31,14 @@ module.exports = {
 		INVALID_POSTCODE: "Il semble que c'est une code postal invalide, voulez-vous essayer à nouveau?",
 	    LANG_SET: "J'ai règlé votre langue à",
 	    LANG_CHANGE: ', voulez-vous le modifier?',
-		WEBSITE : "View Website",
-		MAP: "Find us",
-		SEARCH_AGAIN: "Search Again",
-		NOPHONE: "No phone info"
+		WEBSITE : "Voir le site",
+		MAP: "Trouvez-nous",
+		SEARCH_AGAIN: "Recherche encore",
+		NOPHONE: "Aucune informations"
 	},
 	es_LA: {
 		INTRODUCTION : "Hola, me llamo NIMA. Soy tu amigo inteligente. Te puedo ayudar a encontrar entidades de NHS. Y esto es solo el principio.",
-		INPUT_GREET1 : 'hola',
-		INPUT_GREET2 : 'hey',
-		INPUT_GREET3 : 'hola',
 		RESET : 'Ok, empecemos de nuevo :)',
-		INPUT_RESET : 'reset',
 		GREETING: 'Hola, ',
 		GREETING_POST: ' bienvenido!',
 		LOCATION: 'Todo listo! Ahora enviame tu localizacion o escribe tu codigo postal para que pueda ayudarte',

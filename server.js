@@ -3,44 +3,14 @@ var bodyParser  = require('body-parser');
 var request = require('request');
 var apis = require('./api');
 var responses = require('./responses');
+var humanResponses = require('./human-responses');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-/* General conversation */
-var BOT_RESPONSES  = {
-    INTRODUCTION : "Hi, i'm NIMA. I'm your smart friend. I can find NHS facilities near you. And this is only the beginning.",
-    INPUT_GREET1 : 'hi',
-    INPUT_GREET2 : 'hello',
-    INPUT_GREET3 : 'hey',
-    RESET : 'Lets do a fresh start...',
-    INPUT_RESET : 'reset',
-    GREETING  : 'Hi, ',
-    GREETING_POST  : ' nice to see you here :)',
-    LOCATION     : 'Ready to go! Now send me your location or write me your postcode to help you out.',
-    THANKS : "Thank you (Y)",
-    SEARCH_OPTIONS: "Thank you (Y). Now I can find for you the nearest...",
-    SEARCH_OPTIONS_REPEAT: "Of course :D! Let me find for you the nearest...",
-    ERROR : 'That is so funny! :D',
-    INVALID_POSTCODE : "Mmm... It doesn't look like a valid postcode, do you want to give another try?",
-    LANG_SET : "We've set your language to",
-    LANG_CHANGE : ', would you like to change it?',
-    WEBSITE : "View Website",
-    MAP: "Find us",
-    SEARCH_AGAIN: "Search Again",
-    NOPHONE: "No phone info"
-};
-
 var USER_LANG_STATE = [];
-
-var BUTTON_STRINGS = {
-    WEBSITE : "View Website",
-    MAP: "Find us",
-    SEARCH_AGAIN: "Search Again",
-    NOPHONE: "No phone info"
-};
 
 var BOT_STATUS = {
     NEED_GREET : 0,
@@ -51,11 +21,10 @@ var BOT_STATUS = {
     MENU : 5
 };
 
-
 var BOT_SEARCH_OPTIONS_MATCH = {
     HOSPITALS: 'hospital',
-    PHARMACIES: 'Pharmac',
-    GPS: 'GP'
+    PHARMACIES: 'pharmac',
+    GPS: 'gp'
 };
 
 var BOT_SEARCH_OPTIONS = {
@@ -122,17 +91,6 @@ app.get('/', function (req, res) {
 });
 
 app.post('/webhook/', function (req, res) {
-
-    //RED ALERT CODE!
-/*
-    messaging_events = req.body.entry[0].messaging;
-    for (i = 0; i < messaging_events.length; i++) {
-        event = req.body.entry[0].messaging[i];
-        sender = event.sender.id;
-        sayError(sender,BOT_STATUS.NEED_LOCATION,res);
-    }
-    return;
- */
     messaging_events = req.body.entry[0].messaging;
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i];
@@ -171,6 +129,62 @@ function determineResponse(status, sender, event, res, req) {
   }
 }
 
+function determineHumanResponseType(text) {
+    if (responses.GREETING.indexOf(text) >= -1) {
+        responseType = "GREETING";
+    } else if (responses.RUDE.indexOf(text) >= -1) {
+        responseType = "RUDE"; 
+    } else if (responses.THANKS.indexOf(text) >= -1) {
+        responseType = "THANKS"; 
+    } else if (responses.RESET_LOCATION.indexOf(text) >= -1) {
+        responseType = "RESET"; 
+    } else if (responses.RESET_LANGUAGE.indexOf(text) >= -1) {
+        responseType = "RESET"; 
+    } else {
+        responseType = false;
+    }
+
+    return responseType;
+}
+
+function determineBotResponse(status, responseType, res) {
+    switch (responseType) {
+        case "RESET"
+            sayReset(sender,res);
+            break;
+        case "GREETING"
+            introductoryGreet(sender, event, res, req);
+            break;
+        case "THANKS"
+            replyToSender(sender, "You're welcome! :)");
+            break;
+        case "RUDE"
+            replyToSender(sender, "That's not very nice :(");
+            break;
+        default:
+            break;
+}
+/* General methods */
+function detectLanguage(language) {
+    switch (language){
+        case BOT_LANGUAGE_OPTIONS.ENGLISH_UK:
+            return LANGUAGE_CODES.ENGLISH;
+            break;
+        case BOT_LANGUAGE_OPTIONS.ENGLISH_US:
+            return LANGUAGE_CODES.ENGLISH;
+            break;
+        case BOT_LANGUAGE_OPTIONS.FRANCAIS_FR:
+            return LANGUAGE_CODES.FRANCAIS;
+            break;
+        case BOT_LANGUAGE_OPTIONS.ESPAÑOL_LA:
+            return LANGUAGE_CODES.ESPAÑOL;
+            break;
+        default:
+            return LANGUAGE_CODES.ENGLISH;
+            break;
+    }
+}
+
 function setLanguageFromQuickReplies(event, sender, res, req) {
     if (event.message && event.message.text) {
         text = event.message.text;
@@ -179,7 +193,6 @@ function setLanguageFromQuickReplies(event, sender, res, req) {
             console.log(`Setting language ${text}`);
             currentLang = LANGUAGE_CODES[text.toUpperCase()];
             BOT_RESPONSES = responses[currentLang];
-            // set bot responses here
         }
     }
 
@@ -199,24 +212,22 @@ function handleNeedLocation(event, sender, req, res) {
         } else {
             if (event.message && event.message.text) {
                 text = event.message.text.toLowerCase();
-                switch (text) {
-                    case BOT_RESPONSES.INPUT_RESET:
-                      sayReset(sender, res);
-                      break;
-                    default:
-                        //api to get lat lng from postcode
-                        apis.getLatLngFromPostcode(text, function (latitude,longitude) {
-                            if(latitude != 0 && longitude != 0) {
-                                lat = latitude;
-                                lng = longitude;
-                                saySearchOptions(sender, BOT_STATUS.MENU, res);
-                            }
-                            else {
-                                replyToSender(sender,BOT_RESPONSES.INVALID_POSTCODE);
-                                res.sendStatus(200);
-                            }
-                        });
-                        break;
+                var responseType = determineHumanResponseType(text);
+                if (responseType){
+                    return determineBotResponse(status, responseType, res);
+                }
+                //api to get lat lng from postcode
+                apis.getLatLngFromPostcode(text, function (latitude,longitude) {
+                    if (latitude != 0 && longitude != 0) {
+                        lat = latitude;
+                        lng = longitude;
+                        saySearchOptions(sender, BOT_STATUS.MENU, res);
+                    }
+                    else {
+                        replyToSender(sender,BOT_RESPONSES.INVALID_POSTCODE);
+                        res.sendStatus(200);
+                    }
+                });
                 }
             } else {
                 sayError(sender, BOT_STATUS.NEED_LOCATION, res);
@@ -248,6 +259,11 @@ function handleMenu(event, sender, req,res) {
                 */
                 text = event.message.text.toLowerCase();
 
+                var responseType = determineHumanResponseType(text);
+                if (responseType){
+                    return determineBotResponse(status, responseType, res);
+                }
+
                 if (text.includes(BOT_SEARCH_OPTIONS_MATCH.HOSPITALS.toLowerCase())) {
                     text = BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase();
                 } else if (text.includes(BOT_SEARCH_OPTIONS_MATCH.PHARMACIES.toLowerCase())) {
@@ -259,10 +275,6 @@ function handleMenu(event, sender, req,res) {
                 console.log(text);
 
                 switch (text) {
-                    case BOT_RESPONSES.INPUT_RESET:
-                        sayReset(sender,res);
-                        break;
-
                     case BOT_SEARCH_OPTIONS.HOSPITALS.toLowerCase():
                         showTyping(true, sender);
                         apis.getNHSFacility(apis.searchTypes.HOSPITALS,lat,lng,function(items){
@@ -287,12 +299,6 @@ function handleMenu(event, sender, req,res) {
                             res.sendStatus(200);
                         });
                         break;
-
-                    case BOT_RESPONSES.INPUT_GREET1:
-                    case BOT_RESPONSES.INPUT_GREET2:
-                    case BOT_RESPONSES.INPUT_GREET3:
-                        saySearchOptions(sender,BOT_STATUS.MENU,res);
-                        break;
                     case BOT_RESPONSES.SEARCH_OPTIONS_REPEAT:
                         saySearchOptionsAgain(sender,BOT_STATUS.MENU,res);
                         break;
@@ -303,32 +309,11 @@ function handleMenu(event, sender, req,res) {
             }
             else {
                 //error
-                console.log("EVENT---------",event);
-                console.log("REQUEST---------",req);
+                console.log("EVENT---------", event);
+                console.log("REQUEST---------", req);
                 sayError(sender, BOT_STATUS.MENU, res);
             }
         }
-}
-
-/* General methods */
-function detectLanguage(language) {
-    switch (language){
-        case BOT_LANGUAGE_OPTIONS.ENGLISH_UK:
-            return LANGUAGE_CODES.ENGLISH;
-            break;
-        case BOT_LANGUAGE_OPTIONS.ENGLISH_US:
-            return LANGUAGE_CODES.ENGLISH;
-            break;
-        case BOT_LANGUAGE_OPTIONS.FRANCAIS_FR:
-            return LANGUAGE_CODES.FRANCAIS;
-            break;
-        case BOT_LANGUAGE_OPTIONS.ESPAÑOL_LA:
-            return LANGUAGE_CODES.ESPAÑOL;
-            break;
-        default:
-            return LANGUAGE_CODES.ENGLISH;
-            break;
-    }
 }
 
 function introductoryGreet(sender, event, res, req) {
