@@ -29,9 +29,27 @@ module.exports = {
 		THANKS: "Merci",
 		SEARCH_OPTIONS: "Merci beaucoup. Maintenant je peux trouver le plus proche...",
 		SEARCH_OPTIONS_REPEAT: "Bien sûr :D! Laissez moi trouver le plus proche...",
-		ERROR: "Desolée, pouvez-vous cela d'une manière différente?"
+		ERROR: "Desolée, pouvez-vous cela d'une manière différente?",
 		INVALID_POSTCODE: "Il semble que c'est une code postal invalide, voulez-vous essayer à nouveau?",
 	    LANG_SET: "J'ai règlé votre langue à",
 	    LANG_CHANGE: ', voulez-vous le modifier?'
+	},
+	es_LA: {
+		INTRODUCTION : "Hola, me llamo NIMA. Soy tu amigo inteligente. Te puedo ayudar a encontrar entidades de NHS. Y esto es solo el principio.",
+		INPUT_GREET1 : 'hola',
+		INPUT_GREET2 : 'hey',
+		INPUT_GREET3 : 'hola',
+		RESET : 'Ok, empecemos de nuevo :)',
+		INPUT_RESET : 'reset',
+		GREETING: 'Hola, ',
+		GREETING_POST: ' bienvenido!',
+		LOCATION: 'Todo listo! Ahora enviame tu localizacion o escribe tu codigo postal para que pueda ayudarte',
+		THANKS: "Muchas gracias (Y)",
+		SEARCH_OPTIONS: "Muchas gracias (Y). Ahora puedo encontrar cerca de ti...",
+		SEARCH_OPTIONS_REPEAT: "Por supuesto :D! Que necesitas encontrar cerca de ti:",
+		ERROR: 'Jajaja eso ha sido muy gracioso :D',
+		INVALID_POSTCODE: "Mmm... No parece un codigo postal correcto...Lo intentamos de nuevo?",
+		LANG_SET: "Ok, hablemos en",
+		LANG_CHANGE: ', te gustaria cambiarlo?'
 	}
 }
