@@ -54,4 +54,3 @@ module.exports = {
 		LANG_CHANGE: ', te gustaria cambiarlo?'
 	}
 }
->>>>>>> 3371b4421dac2c69f8aaef25465548c171705b7b
