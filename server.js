@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({
 
 /* General conversation */
 var BOT_RESPONSES  = {
-    INTRODUCTION : "Hi, i'm NIMA. I'm your smart friend. I can find NHS facilities near you. And this is only the beginning. Dont be shy :D, say Hi",
+    INTRODUCTION : "Hi, i'm NIMA. I'm your smart friend. I can find NHS facilities near you. And this is only the beginning.",
     INPUT_GREET1 : 'hi',
     INPUT_GREET2 : 'hello',
     INPUT_GREET3 : 'hey',
@@ -18,7 +18,7 @@ var BOT_RESPONSES  = {
     INPUT_RESET : 'reset',
     GREETING  : 'Hi, ',
     GREETING_POST  : ' nice to see you here :)',
-    LOCATION     : 'Ready to go!. Now send me your location or write me your postcode to help you out.',
+    LOCATION     : 'Ready to go! Now send me your location or write me your postcode to help you out.',
     THANKS : "Thank you (Y)",
     SEARCH_OPTIONS: "Thank you (Y). Now I can find for you the nearest...",
     SEARCH_OPTIONS_REPEAT: "Of course :D! Let me find for you the nearest...",
