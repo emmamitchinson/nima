@@ -2,6 +2,7 @@ var app = require('express')();
 var bodyParser  = require('body-parser');
 var request = require('request');
 var apis = require('./api');
+var responses = require('./responses');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -167,6 +168,7 @@ function setLanguageFromQuickReplies(event, sender, res, req) {
         if (options.indexOf(text) != -1) {
             console.log(`Setting language ${text}`);
             currentLang = LANGUAGE_CODES[text.toUpperCase()];
+            BOT_RESPONSES = responses[currentLang];
             // set bot responses here
         }
     }
@@ -321,6 +323,7 @@ function introductoryGreet(sender, event, res, req) {
     apis.getUserNameAndLang(sender, function (firstName,language) {
         console.log("LOCALE OF USER ", language );
         currentLang = detectLanguage(language);
+        BOT_RESPONSES = responses[currentLang];
         console.log(status, currentLang);
         if (!askedLangNoLocation) {
           console.log(currentLang);
