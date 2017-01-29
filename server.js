@@ -119,7 +119,7 @@ app.post('/webhook/', function (req, res) {
 
         console.log(`Current status: ${status}`);
         console.log(`Available states: ${JSON.stringify(BOT_STATUS)}`);
-        console.log(`The event value is - ${event}`);
+        console.log(`The event value is - ${JSON.stringify(event)}`);
         determineResponse(status, sender, event, res, req);
     }
 });
