@@ -340,7 +340,6 @@ function saySearchOptionsAgain(sender, nextStatus, res) {
 
 /* SEND - Text */
 function showGreetingsMessage() {
-    console.log("IM HERE.......");
     request({
         url: 'https://graph.facebook.com/v2.6/me/thread_settings',
         qs: { access_token : token },
@@ -348,7 +347,7 @@ function showGreetingsMessage() {
         json: {
             "setting_type":"greeting",
             "greeting":{
-                "text":BOT_RESPONSES.INTRODUCTION
+                "text":"HIIIII"
             }
         }
     }, function(error, response, body) {
