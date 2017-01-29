@@ -211,6 +211,10 @@ function handleMenu(event, sender, req,res) {
             }
         } else {
             if (event.message && event.message.text) {
+                /*
+                convert the user response from user langauge to command for the bot to understand
+                eg hello or hola or boujour wold convert to user_input_hello
+                */
                 text = event.message.text.toLowerCase();
                 switch (text) {
                     case BOT_RESPONSES.INPUT_RESET:
