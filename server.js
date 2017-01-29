@@ -285,6 +285,7 @@ function detectLanguage(language) {
 function introductoryGreet(sender, event, res, req) {
     console.log(sender);
     apis.getUserNameAndLang(sender, function (firstName,language) {
+        console.log("LOCALE OF USER ", language );
         currentLang = detectLanguage(language);
         console.log(status, currentLang);
         if (!askedLangNoLocation) {
