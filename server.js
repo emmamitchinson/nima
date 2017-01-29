@@ -65,6 +65,16 @@ var BOT_LANGUAGE_OPTIONS = {
     FRANCAIS: 'Francais'
 };
 
+var LANGUAGE_CODES = {
+  ENGLISH: 'en_GB',
+  FRANCAIS: 'fr_FR'
+}
+
+var LANGUAGE_PLAIN = {
+  'en_GB': 'ENGLISH',
+  'fr_FR': 'FRANCAIS'
+}
+
 var app_url_callback = "https://nimabotnhs.herokuapp.com/";
 
 
@@ -156,12 +166,13 @@ function setLanguageFromQuickReplies(event, sender, res, req) {
         const options = [BOT_LANGUAGE_OPTIONS.ENGLISH, BOT_LANGUAGE_OPTIONS.FRANCAIS];
         if (options.indexOf(text) != -1) {
             console.log(`Setting language ${text}`);
-            currentLang = text;
+            currentLang = LANGUAGE_CODES[text.toUpperCase()];
+            // set bot responses here
         }
     }
 
     status = BOT_STATUS.NEED_LOCATION;
-    replyToSender(sender, BOT_RESPONSES.LANG_SET + ` ${currentLang}`);
+    replyToSender(sender, BOT_RESPONSES.LANG_SET + ` ${LANGUAGE_PLAIN[currentLang]}`);
     console.log("******** LANGUAGE CONFIRMATION MSG RECEIVED");
     determineResponse(status, sender, event, res, req);
 }
@@ -291,16 +302,16 @@ function handleMenu(event, sender, req,res) {
 function detectLanguage(language) {
     switch (language){
         case BOT_LANGUAGE_OPTIONS.ENGLISH_UK:
-            return BOT_LANGUAGE_OPTIONS.ENGLISH;
+            return LANGUAGE_CODES.ENGLISH;
             break;
         case BOT_LANGUAGE_OPTIONS.ENGLISH_US:
-            return BOT_LANGUAGE_OPTIONS.ENGLISH;
+            return LANGUAGE_CODES.ENGLISH;
             break;
         case BOT_LANGUAGE_OPTIONS.FRANCAIS_FR:
-            return BOT_LANGUAGE_OPTIONS.FRANCAIS;
+            return LANGUAGE_CODES.FRANCAIS;
             break;
         default:
-            return BOT_LANGUAGE_OPTIONS.ENGLISH;
+            return LANGUAGE_CODES.ENGLISH;
             break;
     }
 }
