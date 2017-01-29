@@ -2,7 +2,7 @@ var app = require('express')();
 var bodyParser  = require('body-parser');
 var request = require('request');
 var apis = require('./api');
-var responses = require('./responses');
+var BOT_RESPONSES = require('./responses');
 var humanResponses = require('./human-responses');
 
 app.use(bodyParser.json());
