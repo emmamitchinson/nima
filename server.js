@@ -2,7 +2,6 @@ var app = require('express')();
 var bodyParser  = require('body-parser');
 var request = require('request');
 var apis = require('./api');
-var Localize = require('localize');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -162,7 +161,6 @@ function setLanguageFromQuickReplies(event, sender, res, req) {
     status = BOT_STATUS.NEED_LOCATION;
     replyToSender(sender, BOT_RESPONSES.LANG_SET + ` ${currentLang}`);
     console.log("******** LANGUAGE CONFIRMATION MSG RECEIVED");
-    myLocalize.setLocale("fr");
     determineResponse(status, sender, event, res, req);
 }
 
