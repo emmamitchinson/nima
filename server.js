@@ -63,17 +63,20 @@ var BOT_LANGUAGE_OPTIONS = {
     ENGLISH_US:'en_US',
     ENGLISH: 'English',
     FRANCAIS_FR:'fr_FR',
-    FRANCAIS: 'Francais'
+    FRANCAIS: 'Francais',
+    ESPAÑOL_LA: 'Español'
 };
 
 var LANGUAGE_CODES = {
   ENGLISH: 'en_GB',
-  FRANCAIS: 'fr_FR'
+  FRANCAIS: 'fr_FR',
+  ESPAÑOL: 'es_LA'
 }
 
 var LANGUAGE_PLAIN = {
   'en_GB': 'ENGLISH',
-  'fr_FR': 'FRANCAIS'
+  'fr_FR': 'FRANCAIS',
+  'es_LA': 'ESPAÑOL'
 }
 
 var app_url_callback = "https://nimabotnhs.herokuapp.com/";
@@ -164,7 +167,7 @@ function determineResponse(status, sender, event, res, req) {
 function setLanguageFromQuickReplies(event, sender, res, req) {
     if (event.message && event.message.text) {
         text = event.message.text;
-        const options = [BOT_LANGUAGE_OPTIONS.ENGLISH, BOT_LANGUAGE_OPTIONS.FRANCAIS];
+        const options = [BOT_LANGUAGE_OPTIONS.ENGLISH, BOT_LANGUAGE_OPTIONS.FRANCAIS, BOT_LANGUAGE_OPTIONS.ESPAÑOL];
         if (options.indexOf(text) != -1) {
             console.log(`Setting language ${text}`);
             currentLang = LANGUAGE_CODES[text.toUpperCase()];
@@ -311,6 +314,9 @@ function detectLanguage(language) {
             break;
         case BOT_LANGUAGE_OPTIONS.FRANCAIS_FR:
             return LANGUAGE_CODES.FRANCAIS;
+            break;
+        case BOT_LANGUAGE_OPTIONS.ESPAÑOL_LA:
+            return LANGUAGE_CODES.ESPAÑOL;
             break;
         default:
             return LANGUAGE_CODES.ENGLISH;
@@ -459,6 +465,11 @@ function replyToSenderWithLanguages(sender, currentLang) {
                 "content_type": "text",
                 "title": BOT_LANGUAGE_OPTIONS.FRANCAIS,
                 "payload": BOT_LANGUAGE_OPTIONS.FRANCAIS
+            },
+            {
+                "content_type": "text",
+                "title": BOT_LANGUAGE_OPTIONS.ESPAÑOL,
+                "payload": BOT_LANGUAGE_OPTIONS.ESPAÑOL
             }
         ]
     };
