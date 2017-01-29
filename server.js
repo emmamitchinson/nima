@@ -62,7 +62,7 @@ var app_url_callback = "https://nimabotnhs.herokuapp.com/";
 
 var port = process.env.PORT || 8080;
 var token = "EAAIs8hZBABeoBAH8jpZAa37N2yvzwcV1VjCWy1GtQDAEsBvSGTMaQ6hwZC4EZCQ2AZA6jSVSXoGXsli8CSRmqAtCnavmb6UMfcsTFdEwIjAzo195YuBiTJBTGrmXhZBOyxkVEwzJb1mrmTjffCSZAbw7TW6gv0WlbVHjsRQTRSxcAZDZD";
-var secret = "catcatcat";
+var secret = "aeffbb04be4d8c1b7b5cf56a7ef58f4f";
 var status = BOT_STATUS.NEED_GREET;
 var lat = 0;
 var lng = 0;
@@ -163,6 +163,7 @@ function determineBotResponse(status, responseType, res) {
             break;
         default:
             break;
+    }
 }
 /* General methods */
 function detectLanguage(language) {
@@ -568,7 +569,6 @@ function showTyping(flag,sender) {
 }
 
 function replyToSenderWithCarousel(sender, items) {
-
     var elements = [];
     items.forEach(function(item){
         var urlAction = {
